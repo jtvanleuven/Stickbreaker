@@ -1,34 +1,41 @@
 ---
 title: "Stickbreaker Vignette v2"
-author: "Craig Miller and JT"
-date: "December 12, 2016"
-output: html_document
+author: "Craig Miller and James Van Leuven"
+date: "`r date()`"
+output:
+  html_document:
+    fig_caption: yes
+    number_sections: yes
+    toc: yes
+    toc_depth: 3
+  pdf_document:
+    fig_caption: yes
+    number_sections: yes
+    toc: yes
+    toc_depth: 3
+csl: apa.csl  
 ---
 
-This document teaches you how to use the Stickbreaker package.
+## 1. Introduction {-}
 
-Write an overview paragraph that goes here.
+Genetically modified organisms are used to test the phenotypic effects of mutation. Often, multiple substitutions impact organismal fitness differently than single substitutions (epistatic interactions). This package fits three basic models (additive, multiplicative, and stickbreaking) to fitness data and suggests the best fitting model by multinomial regression. Stickbreaker can also be used to simulate fitness data.
 
-JT: Figure out how to load libraries in a package. I don't think this is the correct way to do it.....No it is not. 
-
-JT: Figure out how to put TOC at top of document.
-
-```{r, echo=TRUE}
-  devtools::load_all()  # Load package
+```{r setup, echo=FALSE, include=FALSE}
+suppressPackageStartupMessages({
   library(nnet)
   library(lattice)
   library(xtable)
+  devtools::load_all()
+})
 ```
 
-## I. Basic Analysis
+## 2. Basic Analysis {-}
 
 ### Data format
 
 The data should be in a text file. If there are $n$ mutations in the dataset, there should be $n$ columns in the file. The first row should be mutation names. The data in the columns are 0/1 to indicate the absence/presence of the mutation. All 0s indicates wild type and should be the first row of data. The last column is the estimated fitness of that genotype. You can see the format of the data below.
 
 ### Read in data
-
-JT: Maybe we should make this readCSV instead of based on an R dataset format. 
 
 
 ```{r, echo=TRUE}
@@ -75,7 +82,7 @@ After the data has been fit to the three models, we use the summary fit statisti
 ```
 
 
-## II. Detailed Features
+## 3. Detailed Features {-}
 
 ### Setup
 
@@ -475,4 +482,3 @@ This is very similar to the full networks, except that we supply a particular da
 
 
 ### Model Selection Assessment
-
