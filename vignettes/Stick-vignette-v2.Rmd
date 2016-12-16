@@ -68,6 +68,8 @@ After the data has been fit to the three models, we use the summary fit statisti
 
 *Priors etc.:* To simulate data you need to define your priors and the number of replicate datasets to simulate. These are defined at the beginning of the next code block. `coes.prior` is a vector with the lower and upper bounds on the coefficients; `sig.prior` is the lower and upper bound on the $\sigma$. `n.samps.per.mod` is the number of datasets to simulate per model. You may want to initially set this to a small value like 50 or 100 to check things are running and behaving properly. For a final analysis you should increase this number to 1000 or better yet 10000. Be warned that it will take some time to simulate 10000 datasets for each model. `d.range`, `d.adj.max`, and `wts` are discussed above. Finally, use `analysis.name` to assign a unique name so that the simulated fitted data and the multinomial model it leads to are saved with unique identifiers. These files may be of interest (and save you computing time) if you choose to tap into any of the detailed features detailed below.
 
+Add mention of `min.R2`.
+
 
 ```{r, echo=TRUE}
   coes.prior <- c(0.05, 0.5)
@@ -78,7 +80,7 @@ After the data has been fit to the three models, we use the summary fit statisti
   wts <- c(2,1)
   analysis.name <- "Test"
     
-  posterior.results <- simulate.data.calculate.posteriors(fit.results$fit.smry, data, analysis.name, coes.prior, sig.prior, d.range, d.adj.max, wts, n.samps.per.mod)
+  posterior.results <- simulate.data.calculate.posteriors(fit.results$fit.smry, data, analysis.name, coes.prior, sig.prior, d.range, d.adj.max, wts, n.samps.per.mod, min.R2)
 ```
 
 
