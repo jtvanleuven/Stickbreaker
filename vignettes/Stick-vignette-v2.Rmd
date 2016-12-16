@@ -78,6 +78,7 @@ Add mention of `min.R2`.
   d.range <- c(0.1, 10)
   d.adj.max <- 1.1
   wts <- c(2,1)
+  min.R2 <- -1
   analysis.name <- "Test"
     
   posterior.results <- simulate.data.calculate.posteriors(fit.results$fit.smry, data, analysis.name, coes.prior, sig.prior, d.range, d.adj.max, wts, n.samps.per.mod, min.R2)

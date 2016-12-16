@@ -9,7 +9,7 @@
 #' @param d.adj.max X
 #' @param wts X
 #' @param n.samps.per.mod X
-#' @param min.R2
+#' @param min.R2 X
 #' @return List:\cr
 #' \code{$posteriors} Posterior probability of each epistasis model. \cr
 #' \code{$multinomial.model} Multinomial model fit to the simulated data used to assign posterior probabilities.
@@ -41,12 +41,12 @@ simulate.data.calculate.posteriors <- function(fit.smry, data, analysis.name, co
                                                       coe.dist.par=NA)
 
   print("Fitting multinomial model to simulated data")
-  simdata <- read.table(file=simdata.outpath, header=TRUE)
+  data <- read.table(file=simdata.outpath, header=TRUE)
   data$R2.stick[which(data$R2.stick<min.R2)] <- min.R2
   data$R2.mult[which(data$R2.mult<min.R2)] <- min.R2
   data$R2.add[which(data$R2.add<min.R2)] <- min.R2
   mod.formula <- as.formula(model ~ R2.stick + R2.mult + R2.add + P.stick + P.mult + P.add)
-  mod <- fit.nnet.multinomial.regression(simdata, mod.formula)
+  mod <- fit.nnet.multinomial.regression(data, mod.formula)
   posteriors <- predict(mod, newdata=fit.smry, type="probs")
   return(list(posteriors=posteriors, multinomial.model=mod))
 }
