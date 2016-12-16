@@ -25,7 +25,7 @@ generate.geno.matrix <- function(n){
       g <- cbind(g, c.to.add)
     }
   }
-  colnames(g) <- seq(1, n)
+  colnames(g) <- paste("mut",seq(1, n), sep=".")
   return(g)
 }
 
@@ -125,7 +125,7 @@ simulate.fit.stick.data.batch <- function(mut.vals, coe.vals, sig.vals, d.true, 
         if (print.status == TRUE) print(paste("sigma = ", sigma))
 
         for (rep.i in 1:n.reps.ea){
-          stick.sim.data <- simulate.stick.data(n.muts, coes, sigma, d.true, w.wt)
+          stick.sim.data <- simulate.stick.data(n.muts, coes, sigma, d.true, w.wt, geno.matrix)
           fit.matrix <- stick.sim.data$fit.matrix
           d.hat.MLE <- estimate.d.MLE(geno.matrix, fit.matrix, d.range=d.range)
           d.hat.RDB.list <- estimate.d.RDB(geno.matrix, fit.matrix)
@@ -145,7 +145,7 @@ simulate.fit.stick.data.batch <- function(mut.vals, coe.vals, sig.vals, d.true, 
             method.dex <- which(names(d.hat.list)==paste("d.hat.", fit.methods2[method.i], sep=""))
             fit.stick <- fit.stick.model.given.d(geno.matrix, fit.matrix, d.hat.list[[method.dex]], wts=wts, run.regression)
             method <- fit.methods2[method.i]
-            if (fit.methods2[method.dex]=="seq"){
+            if (method=="seq"){
               method.dhat <- names(d.hat.seq)
             } else{
               method.dhat <- method  #method[method.dex]
@@ -282,11 +282,11 @@ simulate.fit.mult.add.data.batch <- function(epi.model, mut.vals, coe.vals, sig.
         for (rep.i in 1:n.reps.ea){
           parm.row <- unlist(list(sim.model=epi.model, fit.model=epi.model, n.muts=n.muts, coes=coes[1], sigma=sigma, rep=rep.i))
           if (epi.model == "mult"){
-            fit.matrix <- simulate.mult.data(n.muts, selcoes=coes, sigma=sigma, w.wt=w.wt)$fit.matrix
+            fit.matrix <- simulate.mult.data(n.muts, selcoes=coes, sigma=sigma, w.wt=w.wt, geno.matrix)$fit.matrix
             fit.mult <- fit.mult.model(geno.matrix, fit.matrix, wts)
             fit.row <- unlist(list(round(unlist(fit.mult[1:4]),5), P=round(fit.mult$regression.results$P,5)))
           } else if (epi.model == "add"){
-            fit.matrix <-  simulate.add.data(n.muts, addcoes=coes, sigma=sigma, w.wt=w.wt)$fit.matrix
+            fit.matrix <-  simulate.add.data(n.muts, addcoes=coes, sigma=sigma, w.wt=w.wt, geno.matrix)$fit.matrix
             fit.add <- fit.add.model(geno.matrix, fit.matrix, wts)
             fit.row <- unlist(list(round(unlist(fit.add[1:4]),5), P=round(fit.add$regression.results$P,5)))
           }

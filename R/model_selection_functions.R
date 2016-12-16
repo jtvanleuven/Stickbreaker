@@ -41,7 +41,9 @@ simulate.data.calculate.posteriors <- function(fit.smry, data, analysis.name, co
 
   print("Fitting multinomial model to simulated data")
   simdata <- read.table(file=simdata.outpath, header=TRUE)
-  #data$R2.stick[which(data$R2.stick<0)] <- 0
+  data$R2.stick[which(data$R2.stick<0)] <- -5
+  data$R2.mult[which(data$R2.mult<0)] <- -5
+  data$R2.add[which(data$R2.add<0)] <- -5
   mod.formula <- as.formula(model ~ R2.stick + R2.mult + R2.add + P.stick + P.mult + P.add)
   mod <- fit.nnet.multinomial.regression(simdata, mod.formula)
   posteriors <- predict(mod, newdata=fit.smry, type="probs")
@@ -152,6 +154,7 @@ simulate.data.for.mod.selection <- function(n.muts, coes.to.sim, sigs.to.sim, mo
 #' @param mods.to.sim Models to simulate under. Vector with model names of the form c("stick", "mult", "add").
 #' @param d.true True value of d.
 #' @param d.range Range of possible values for d. If estimate is outside this, estimate is not considered valid.
+#' @param d.adj.max Factor to increase observed distanct to max fitness by for ad hoc d estimate (when other estimators fail)
 #' @param w.wt Wild type fitness.
 #' @param wts Weights when estimating coefficients and d.
 #' @param outpath Full path including file name to write results
@@ -159,6 +162,7 @@ simulate.data.for.mod.selection <- function(n.muts, coes.to.sim, sigs.to.sim, mo
 #' @param coe.sim.model Coefficient simulation model. See details.
 #' @param coe.dist.par Coefficient distribution parameter. If coe.sim.model=="uniform", then uniform is U(-coe.dist.par, +coe.dist.parm).
 #' If coe.sim.model=="normal", then distributed normal with mean given by coe.v and sigma give by coe.dist.parm.
+#' @param print.interval Every this many replicates, prints out replicate number. If NA (default) no printing is done.
 #' @return Nothing. Instead results are written to \code{outpath} file for later analysis
 #' @details This function generates datasets by drawing from priors. It generates \code{n.samps.per.mod}
 #' per model. It then analyzes each dataset under all three models writes one row of summary statistics
@@ -171,14 +175,24 @@ simulate.data.for.mod.selection <- function(n.muts, coes.to.sim, sigs.to.sim, mo
 #' Default = "identical".
 #' @export
 
-simulate.data.from.priors.for.mod.selection <- function(n.muts, coes.prior, sigs.prior, mods.to.sim, d.true, d.range, w.wt, wts, outpath, n.samps.per.mod, coe.sim.model="identical", coe.dist.par=NA){
+simulate.data.from.priors.for.mod.selection <- function(n.muts, coes.prior, sigs.prior, mods.to.sim, d.true, d.range, d.adj.max, w.wt, wts, outpath, n.samps.per.mod, coe.sim.model="identical", coe.dist.par=NA, print.interval=NA){
   geno.matrix <- generate.geno.matrix(n.muts)
+  if (is.na(print.interval)==FALSE){
+    print.pts <- c(1, seq(print.interval, n.samps.per.mod, by=print.interval))
+  }
   first.results <- TRUE
   for (mod.i in 1:length(mods.to.sim)){
     model <- mods.to.sim[mod.i]
-
+    if (is.na(print.interval)==FALSE){
+      print(model)
+    }
     for (rep.i in 1:n.samps.per.mod){
 
+      if (is.na(print.interval)==FALSE){
+        if (rep.i %in% print.pts){
+          print(rep.i)
+        }
+      }
       if (coe.sim.model=="identical"){
         coes.prior <- sort(coes.prior)
         coe.center <- runif(n=1,coes.prior[1], coes.prior[2])
@@ -192,11 +206,11 @@ simulate.data.from.priors.for.mod.selection <- function(n.muts, coes.prior, sigs
       sig.val <- runif(n=1, sigs.prior[1], sigs.prior[2])
 
       if (model=="stick"){
-        fit.matrix <- simulate.stick.data(n.muts=n.muts, coes=coes, sigma=sig.val, d.true=d.true, w.wt=w.wt)$fit.matrix
+        fit.matrix <- simulate.stick.data(n.muts=n.muts, coes=coes, sigma=sig.val, d.true=d.true, w.wt=w.wt, geno.matrix)$fit.matrix
       } else if (model=="mult"){
-        fit.matrix <- simulate.mult.data(n.muts=n.muts, selcoes=coes, sigma=sig.val, w.wt=w.wt)$fit.matrix
+        fit.matrix <- simulate.mult.data(n.muts=n.muts, selcoes=coes, sigma=sig.val, w.wt=w.wt, geno.matrix)$fit.matrix
       } else if (model=="add"){
-        fit.matrix <- simulate.add.data(n.muts=n.muts, addcoes=coes, sigma=sig.val, w.wt=w.wt)$fit.matrix
+        fit.matrix <- simulate.add.data(n.muts=n.muts, addcoes=coes, sigma=sig.val, w.wt=w.wt, geno.matrix)$fit.matrix
       }
 
       # --- Fit data to each model ---
@@ -204,7 +218,7 @@ simulate.data.from.priors.for.mod.selection <- function(n.muts, coes.prior, sigs
         d.hat.MLE <- estimate.d.MLE(geno.matrix, fit.matrix, d.range=d.range)
         d.hat.RDB <- estimate.d.RDB(geno.matrix, fit.matrix)$d.hat.RDB
         d.hat.max <- max(fit.matrix, na.rm=TRUE) - w.wt
-        d.hat.seq <- estimate.d.sequential(geno.matrix, fit.matrix, d.hat.MLE, d.hat.RDB, d.range)
+        d.hat.seq <- estimate.d.sequential(geno.matrix, fit.matrix, d.hat.MLE, d.hat.RDB, d.range, d.adj.max)
         fit.stick <- fit.stick.model.given.d(geno.matrix, fit.matrix, d.hat.seq, wts=wts,run.regression=TRUE)
         u.hat.mean <- mean(fit.stick$u.hats)
         fit.stick <- c(u.mean=u.hat.mean, d.hat=d.hat.seq, round(unlist(fit.stick[1:4]),5), P=round(fit.stick$regression.results$P,5))
