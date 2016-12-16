@@ -50,7 +50,7 @@ generate.geno.weight.matrix <- function(geno.matrix, fit.matrix, wts=c(2,1)){
         weight.of.geno <- 1/var.of.diff
         weight.matrix[geno.ii, mut.i] <- weight.of.geno
       } #next geno.i
-    }  #nest.mut.i
+    }  #next.mut.i
 
   }
 
