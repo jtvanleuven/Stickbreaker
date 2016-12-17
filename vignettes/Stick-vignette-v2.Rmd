@@ -85,6 +85,7 @@ Add mention of `min.R2`.
 ```
 
 A small change
+Another change
 
 ## 3. Detailed Features {-}
 
