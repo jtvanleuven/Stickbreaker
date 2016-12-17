@@ -88,6 +88,8 @@ A small change
 Another change
 Another change - jt
 
+conflickts - jt
+
 ## 3. Detailed Features {-}
 
 ### Setup
