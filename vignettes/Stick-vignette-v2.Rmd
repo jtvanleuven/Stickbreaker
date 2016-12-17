@@ -84,6 +84,7 @@ Add mention of `min.R2`.
   posterior.results <- simulate.data.calculate.posteriors(fit.results$fit.smry, data, analysis.name, coes.prior, sig.prior, d.range, d.adj.max, wts, n.samps.per.mod, min.R2)
 ```
 
+A small change
 
 ## 3. Detailed Features {-}
 
