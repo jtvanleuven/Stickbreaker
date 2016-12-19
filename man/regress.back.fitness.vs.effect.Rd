@@ -19,6 +19,8 @@ List: \cr
 [[2]] \code{lm.intercepts} Intercepts for each mutation
 [[3]] \code{lm.slopes} Slopes for each mutation
 [[4]] \code{P} Sum of the logs of the p-values.
+[[5]] \code{fitness.of.backs} Matrix with fitness of backgrounds when each mutation (columns) is added to each genotype (rows).
+[[6]] \code(effects.matrix) Matrix with fitness effect when given mutation (column) is added to given create genotype (row).
 If there is insufficient data to do regression, a warning is returned.
 }
 \description{

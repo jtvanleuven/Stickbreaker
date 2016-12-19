@@ -1,6 +1,17 @@
 
 #' Internal simulation function to generate a matrix to weight the genotypes when estimating d and stickbreaking coefficients
 #'
+#'
+#' An empirical error matrix.
+#'
+#' A dataset containing the fitness values for recombinant strains for Methylobacterium extorquens
+#' Chou, H., H. Chiu, N. Delaney, D. Segrè and C. Marx, 2011 Diminishing returns epistasis among beneficial mutations decelerates adaptation. Science 332: 1190–1192.
+#'
+#' @format A list of 5 elements containing integers (1 or 0) that indicate the absence or presence of mutated alleles at 4 loci and a numerical element with relative fitness values.
+#'
+#' @name burns.data
+NULL
+#'
 #' @param geno.matrix Genotype matrix generated in \code{\link{generate.geno.matrix}}
 #' @param fit.matrix Fitness matrix generated in \code{\link{simulate.stick.data}}
 #' @param wts Vector of weights to be applied of form c(singletons, multiples). Default \code{wts=c(2,1)}.

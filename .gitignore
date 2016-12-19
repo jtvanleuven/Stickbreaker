@@ -1,7 +1,9 @@
-.Rproj.user
+.Rproj.user/
 .Rhistory
+.Rapp.history
 .RData
 .Ruserdata
-inst/figures/*
-inst/extdata/*
-inst/models/*
+inst/figures/
+inst/extdata/
+inst/models/
+*.utf8.md

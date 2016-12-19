@@ -5,8 +5,9 @@
 \title{Simulate data from priors for doing model selection}
 \usage{
 \method{simulate}{data.from.priors.for.mod.selection}(n.muts, coes.prior,
-  sigs.prior, mods.to.sim, d.true, d.range, w.wt, wts, outpath, n.samps.per.mod,
-  coe.sim.model = "identical", coe.dist.par = NA)
+  sigs.prior, mods.to.sim, d.true, d.range, d.adj.max, w.wt, wts, outpath,
+  n.samps.per.mod, coe.sim.model = "identical", coe.dist.par = NA,
+  print.interval = NA)
 }
 \arguments{
 \item{n.muts}{Number of mutations to simulate. Vector of the form \code{c(3,4,5)}.}
@@ -21,6 +22,8 @@
 
 \item{d.range}{Range of possible values for d. If estimate is outside this, estimate is not considered valid.}
 
+\item{d.adj.max}{Factor to increase observed distanct to max fitness by for ad hoc d estimate (when other estimators fail)}
+
 \item{w.wt}{Wild type fitness.}
 
 \item{wts}{Weights when estimating coefficients and d.}
@@ -33,6 +36,8 @@
 
 \item{coe.dist.par}{Coefficient distribution parameter. If coe.sim.model=="uniform", then uniform is U(-coe.dist.par, +coe.dist.parm).
 If coe.sim.model=="normal", then distributed normal with mean given by coe.v and sigma give by coe.dist.parm.}
+
+\item{print.interval}{Every this many replicates, prints out replicate number. If NA (default) no printing is done.}
 }
 \value{
 Nothing. Instead results are written to \code{outpath} file for later analysis

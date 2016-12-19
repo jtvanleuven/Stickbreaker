@@ -19,10 +19,8 @@ Generate genotype matrix for given number of mutations.
 Used when simulating data for a complete network. Generally called internally during simulations to create matrix for which fitness values will then be simulated.
 Minimum value of \code{n} is 2.
 }
-\examples{
-generate.geno.matrix(5)
-}
 \seealso{
 \code{\link{simulate.stick.data}}
+generate.geno.matrix(5)
 }
 

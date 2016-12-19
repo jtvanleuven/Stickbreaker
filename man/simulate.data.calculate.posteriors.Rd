@@ -5,7 +5,7 @@
 \title{Simulate data from priors then use to calcualte posterior probability of models given data}
 \usage{
 \method{simulate}{data.calculate.posteriors}(fit.smry, data, analysis.name,
-  coes.prior, sig.prior, d.range, d.adj.max, wts, n.samps.per.mod)
+  coes.prior, sig.prior, d.range, d.adj.max, wts, n.samps.per.mod, min.R2)
 }
 \arguments{
 \item{fit.smry}{X}
@@ -25,6 +25,8 @@
 \item{wts}{X}
 
 \item{n.samps.per.mod}{X}
+
+\item{min.R2}{X}
 }
 \value{
 List:\cr
