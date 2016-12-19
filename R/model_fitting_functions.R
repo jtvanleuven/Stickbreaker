@@ -63,7 +63,7 @@ fit.models <- function(data, d.range, d.adj.max=1.1, wts=c(2,1)){
 #' of mutations (see details). [[1]] \code{p.vals} gives p-value of each mutation, [[2]] \code{lm.intercepts} gives
 #' estimated intercept for mutation, [[3]] \code{lm.slopes} gives slope for each mutation, [[4]] \code{P} is the
 #' sum of the log of p-values. This is the summary statistic. [[5]] \code{fitness.of.backs} Matrix with fitness of backgrounds when each mutation (columns) is added to each genotype (rows).
-#' [[6]] \code(effects.matrix) Matrix with fitness effect when given mutation (column) is added to given create genotype (row).
+#' [[6]] \code{effects.matrix} Matrix with fitness effect when given mutation (column) is added to given create genotype (row).
 #' @details Note that the coefficient estimates are obtained by weighting. The
 #'   default is to give wild type to single mutation genotypes twice the weight
 #'   as all other comparisions based on the assumption that wild type is know
@@ -187,7 +187,7 @@ fit.stick.model.given.d <- function(geno.matrix, fit.matrix, d.here, wts=c(2,1),
 #' of mutations (see details). [[1]] \code{p.vals} gives p-value of each mutation, [[2]] \code{lm.intercepts} gives
 #' estimated intercept for mutation, [[3]] \code{lm.slopes} gives slope for each mutation, [[4]] \code{P} is the
 #' sum of the log of p-values. This is the summary statistic. [[5]] \code{fitness.of.backs} Matrix with fitness of backgrounds when each mutation (columns) is added to each genotype (rows).
-#' [[6]] \code(effects.matrix) Matrix with fitness effect when given mutation (column) is added to given create genotype (row).
+#' [[6]] \code{effects.matrix} Matrix with fitness effect when given mutation (column) is added to given create genotype (row).
 #' @details \code{wts}:  The coefficient estimates are obtained by weighted comparisions. The
 #'   default is to give wild type to single mutation genotype comparisions twice the weight
 #'   as all other comparisions based on the assumption that wild type is know
@@ -291,7 +291,7 @@ fit.mult.model <- function(geno.matrix, fit.matrix, wts=c(2,1)){
 #' of mutations (see details). [[1]] \code{p.vals} gives p-value of each mutation, [[2]] \code{lm.intercepts} gives
 #' estimated intercept for mutation, [[3]] \code{lm.slopes} gives slope for each mutation, [[4]] \code{P} is the
 #' sum of the log of p-values. This is the summary statistic. [[5]] \code{fitness.of.backs} Matrix with fitness of backgrounds when each mutation (columns) is added to each genotype (rows).
-#' [[6]] \code(effects.matrix) Matrix with fitness effect when given mutation (column) is added to given create genotype (row).
+#' [[6]] \code{effects.matrix} Matrix with fitness effect when given mutation (column) is added to given create genotype (row).
 #' @details \code{wts}:  The coefficient estimates are obtained by weighted comparisions. The
 #'   default is to give wild type to single mutation genotype comparisions twice the weight
 #'   as all other comparisions based on the assumption that wild type is know
@@ -381,7 +381,7 @@ fit.add.model <- function(geno.matrix, fit.matrix, wts=c(2,1)){
 #' [[3]] \code{lm.slopes} Slopes for each mutation
 #' [[4]] \code{P} Sum of the logs of the p-values.
 #' [[5]] \code{fitness.of.backs} Matrix with fitness of backgrounds when each mutation (columns) is added to each genotype (rows).
-#' [[6]] \code(effects.matrix) Matrix with fitness effect when given mutation (column) is added to given create genotype (row).
+#' [[6]] \code{effects.matrix} Matrix with fitness effect when given mutation (column) is added to given create genotype (row).
 #' If there is insufficient data to do regression, a warning is returned.
 #' @details For each mutation, function does simple linear regressionusing \code{lm()}.
 #' The product of logged p-values (\code{P}) is the summary statistic used in model selection.

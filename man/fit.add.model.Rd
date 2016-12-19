@@ -29,7 +29,7 @@ List:\cr
 of mutations (see details). [[1]] \code{p.vals} gives p-value of each mutation, [[2]] \code{lm.intercepts} gives
 estimated intercept for mutation, [[3]] \code{lm.slopes} gives slope for each mutation, [[4]] \code{P} is the
 sum of the log of p-values. This is the summary statistic. [[5]] \code{fitness.of.backs} Matrix with fitness of backgrounds when each mutation (columns) is added to each genotype (rows).
-[[6]] \code(effects.matrix) Matrix with fitness effect when given mutation (column) is added to given create genotype (row).
+[[6]] \code{effects.matrix} Matrix with fitness effect when given mutation (column) is added to given create genotype (row).
 }
 \description{
 Fit the additive model to data
