@@ -1,17 +1,6 @@
 
 #' Internal simulation function to generate a matrix to weight the genotypes when estimating d and stickbreaking coefficients
 #'
-#'
-#' An empirical error matrix.
-#'
-#' A dataset containing the fitness values for recombinant strains for Methylobacterium extorquens
-#' Chou, H., H. Chiu, N. Delaney, D. Segrè and C. Marx, 2011 Diminishing returns epistasis among beneficial mutations decelerates adaptation. Science 332: 1190–1192.
-#'
-#' @format A list of 5 elements containing integers (1 or 0) that indicate the absence or presence of mutated alleles at 4 loci and a numerical element with relative fitness values.
-#'
-#' @name burns.data
-NULL
-#'
 #' @param geno.matrix Genotype matrix generated in \code{\link{generate.geno.matrix}}
 #' @param fit.matrix Fitness matrix generated in \code{\link{simulate.stick.data}}
 #' @param wts Vector of weights to be applied of form c(singletons, multiples). Default \code{wts=c(2,1)}.
@@ -72,3 +61,36 @@ generate.geno.weight.matrix <- function(geno.matrix, fit.matrix, wts=c(2,1)){
   return(weight.matrix)
 }
 
+#' A dataset containing the fitness values for recombinant strains for Methylobacterium extorquens.
+#' Chou, H., H. Chiu, N. Delaney, D. Segrè and C. Marx, 2011 Diminishing returns epistasis among beneficial mutations decelerates adaptation. Science 332: 1190\–1192.
+#'
+#' @format A list of 5 elements containing integers (1 or 0) that indicate the absence or presence of mutated alleles at 4 loci and a numerical element with relative fitness values.
+#'
+#' @name chou.data
+NULL
+#'
+#' A dataset containing the fitness values for recombinant poliovirus viruses.
+#' Burns, C.C., Shaw, J., Campagnoli, R., Jorba, J., Vincent, A., Quay, J., and Kew, O. (2006). Modulation of Poliovirus Replicative Fitness in HeLa Cells by Deoptimization of Synonymous Codon Usage in the Capsid Region. J Virol 80, 3259\-3272.
+#'
+#' @format A list of 5 elements containing integers (1 or 0) that indicate the absence or presence of mutated alleles at 4 loci and a numerical element with relative fitness values.
+#'
+#' @name burns.data
+NULL
+#'
+#' A dataset containing the fitness values for recombinant Escherichia coli bacteria.
+#' Khan, A. I., D. M. Dinh, D. Schneider, R. E. Lenski and T. F. Cooper, 2011 Negative epistasis between beneficial mutations in an evolving bacterial population. Science 332: 1193\-1196.
+#'
+#' @format A list of 6 elements containing integers (1 or 0) that indicate the absence or presence of mutated alleles at 5 loci and a numerical element with relative fitness values.
+#'
+#' @name Khan.data
+NULL
+#'
+#'
+#'A dataset containing the fitness values for recombinant microviridae bacteriophage.
+#' Caudle, S. B., C. R. Miller and D. R. Rokyta, 2014 Environment determines epistatic patterns for a ssdna virus. Genetics 196: 267\–279.
+#'
+#' @format A list of 12 elements containing integers (1 or 0) that indicate the absence or presence of mutated alleles at 9 loci, a numerical element with relative fitness values, a integer element showing number of replications, and an numerical element showing error rates.
+#'
+#' @name caudle.data
+NULL
+#'

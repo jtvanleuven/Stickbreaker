@@ -2,13 +2,11 @@
 % Please edit documentation in R/fnxs_general.R
 \name{burns.data}
 \alias{burns.data}
-\title{Internal simulation function to generate a matrix to weight the genotypes when estimating d and stickbreaking coefficients}
+\title{A dataset containing the fitness values for recombinant poliovirus viruses
+Burns, C.C., Shaw, J., Campagnoli, R., Jorba, J., Vincent, A., Quay, J., and Kew, O. (2006). Modulation of Poliovirus Replicative Fitness in HeLa Cells by Deoptimization of Synonymous Codon Usage in the Capsid Region. J Virol 80, 3259–3272.}
 \format{A list of 5 elements containing integers (1 or 0) that indicate the absence or presence of mutated alleles at 4 loci and a numerical element with relative fitness values.}
 \description{
-An empirical error matrix.
-}
-\details{
-A dataset containing the fitness values for recombinant strains for Methylobacterium extorquens
-Chou, H., H. Chiu, N. Delaney, D. Segrè and C. Marx, 2011 Diminishing returns epistasis among beneficial mutations decelerates adaptation. Science 332: 1190–1192.
+A dataset containing the fitness values for recombinant poliovirus viruses
+Burns, C.C., Shaw, J., Campagnoli, R., Jorba, J., Vincent, A., Quay, J., and Kew, O. (2006). Modulation of Poliovirus Replicative Fitness in HeLa Cells by Deoptimization of Synonymous Codon Usage in the Capsid Region. J Virol 80, 3259–3272.
 }
 
