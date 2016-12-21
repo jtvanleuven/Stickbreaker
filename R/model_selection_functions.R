@@ -366,6 +366,7 @@ summarize.posteriors.on.simulated.dataset <- function(data, rej.cut=0.05){
 #' @param coe.sim.model Coefficient simulation model. See details.
 #' @param coe.dist.par Coefficient distribution parameter. If coe.sim.model=="uniform", then uniform is U(-coe.dist.par, +coe.dist.parm).
 #' If coe.sim.model=="normal", then distributed normal with mean given by coe.v and sigma give by coe.dist.parm.
+#' @param print.interval Every this many replicates, prints out replicate number. If NA (default) no printing is done.
 #' @return Nothing. Instead results are written to \code{outpath} file for later analysis
 #' @details This function generates datasets by drawing from priors. It generates \code{n.samps.per.mod}
 #' per model. It then analyzes each dataset under all three models writes one row of summary statistics
@@ -378,24 +379,23 @@ summarize.posteriors.on.simulated.dataset <- function(data, rej.cut=0.05){
 #' Default = "identical".
 #' @export
 
-simulate.partial.data.from.priors.for.mod.selection <- function(geno.matrix, coes.prior, sigs.prior, mods.to.sim, d.true, d.range, d.adj.max, w.wt, wts, outpath, n.samps.per.mod, coe.sim.model="identical", coe.dist.par=NA){
+simulate.partial.data.from.priors.for.mod.selection <- function(geno.matrix, coes.prior, sigs.prior, mods.to.sim, d.true, d.range, d.adj.max, w.wt, wts, outpath, n.samps.per.mod, coe.sim.model="identical", coe.dist.par=NA, print.interval){
   n.muts <- length(geno.matrix[1,])
-  first.results <- TRUE
-  print.interval <- 25
-  print(paste("Simulating data from priors. ", n.samps.per.mod, " reps per mod."))
-  print("Model, replicate #:")
-  if (n.samps.per.mod >= print.interval){
-    print.v <- c(1,seq(print.interval, n.samps.per.mod, by=print.interval))
-  } else{
-    print.v <- 1
+  if (is.na(print.interval)==FALSE){
+    print.pts <- c(1, seq(print.interval, n.samps.per.mod, by=print.interval))
   }
+  first.results <- TRUE
   for (mod.i in 1:length(mods.to.sim)){
     model <- mods.to.sim[mod.i]
-    print(model)
+    if (is.na(print.interval)==FALSE){
+      print(model)
+    }
     for (rep.i in 1:n.samps.per.mod){
-        if (rep.i %in% print.v){
+      if (is.na(print.interval)==FALSE){
+        if (rep.i %in% print.pts){
           print(rep.i)
         }
+      }
       if (coe.sim.model=="identical"){
         coes.prior <- sort(coes.prior)
         coe.center <- runif(n=1,coes.prior[1], coes.prior[2])
