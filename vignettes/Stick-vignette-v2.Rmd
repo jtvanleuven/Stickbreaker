@@ -81,17 +81,13 @@ Add mention of `min.R2`.
   min.R2 <- -1
   analysis.name <- "Test"
     
-  posterior.results <- simulate.data.calculate.posteriors(fit.results$fit.smry, data, analysis.name, coes.prior, sig.prior, d.range, d.adj.max, wts, n.samps.per.mod, min.R2)
+  posterior.results <- simulate.data.calculate.posteriors(fit.results$fit.smry, data, analysis.name, coes.prior, sig.prior, d.range, d.adj.max, wts, n.samps.per.mod, min.R2, print.interval=25)
 ```
-
-A small change
-Another change
-Another change - jt
 
 
 # III. Detailed Features {-}
 
-## A. Setup {-}
+## A. Data and Setup {-}
 
 Whereas above we used wrapper functions to do the entire analysis is just a few commands, here we walk through the various functions in greater deatil.
 
@@ -388,9 +384,6 @@ and under a range of potential parameter values. Each simulated dataset is fit t
 
 *Priors*:  `coes.prior` and `sig.prior` specify the prior range of values to simulate coefficiets and sigma values from. Be sure these are reasonable ranges for the data you are dealing with. Also see Basic Analysis section above about priors and other definitions in this code block such as `d.range`, `d.adj.max`, and `wts`. 
 
-
-
-
 ```{r}
 
   simulate.training.data.from.priors <- TRUE
@@ -398,13 +391,13 @@ and under a range of potential parameter values. Each simulated dataset is fit t
   if (simulate.training.data.from.priors == TRUE){
     coes.prior <- c(0.05, 0.5)
     sig.prior <- c(0, 0.25)
-    n.samps.per.mod <- 10
+    n.samps.per.mod <- 100
     d.true <- 1
     d.range <- c(0.1, 10)
     d.adj.max <- 1.1
     w.wt <- 1
     wts <- c(2,1)
-    muts.to.sim <- c(3,4,5)
+    muts.to.sim <- c(4)   
     print.interval <- NA  # set to NA to block update printing
     
     for (mut.i in 1:length(muts.to.sim)){
@@ -463,7 +456,7 @@ One thing we do here that warrants mentioning is that we take all R-squared valu
 
 This is very similar to the full networks, except that we supply a particular dataset structure (in the form of `geno.matrix`) and the simualtions are tailored to it. 
 
-#### a. Generate a partial dataset to analyze
+#### a. Generate a partial dataset to analyze {-}
 
 To have a dataset to work with, let's generate one. Suppose we have five mutations and want only engineer the first and last steps (i.e. wildtype plus each indivdual mutation and 5-mutant genotypes with each indivdiaul mutation removed.) 
 
@@ -480,7 +473,7 @@ To have a dataset to work with, let's generate one. Suppose we have five mutatio
 
 Just as with full data we now need to simulate data from the priors. However, we want every dataset to have the same structure as the data we just cooked up (i.e. first and last steps only).
 
-```{r, eval=FALSE}
+```{r, eval=TRUE}
   outdir <- system.file("extdata", package="Stickbreaker")
   file.name <- paste("Training_simulated_priors_fit_data_first_last", n.muts, "muts.txt", sep="")
   simdata.outpath <- paste(outdir, file.name, sep="/")
@@ -542,6 +535,350 @@ Everything here is exactly the same as with full sets of data.
     }  
 ```
 
-## Model Selection Assessment {-}
+## E. Assessing Model Selection {-}
 
-A line at the end.
+Here we simulate test datasets and ask: how well does the model selection process coverd in the last section perform? 
+
+### 1. Simulate test datasets {-}
+
+In the next code block we simulate datasets at specified paramter values. More specifically, it is necessary to specify the models to simulate (`mods.to.sim`), the number of mutations to simulate (`muts.to.sim`), the coefficients to simulate (`coes.to.sim`) and the sigma values to simulate (`sigs.to.sim`)--all as vectors. The code simulates `n.reps.ea` under all possible parameter value combinations. As elsewhere, `d.true`, `d.range`, and `wts` must be specified. Toggle `simulate.testing.data.from.vectors` to FALSE if you want to skip this or if you already have the data simulated. Like all other simualted data, this is written to `inst/extdata`. Notice that here we are not drawing parameter values from priors, but rather simulating at specified values. The function that simulates at specified values is `simulate.data.for.mod.selection()`.
+
+```{r}
+
+  simulate.testing.data.from.vectors <- TRUE
+  testdata.file <- "Test_simulated_fit_data"
+  
+
+  if (simulate.testing.data.from.vectors == TRUE){
+    mods.to.sim <- c("stick", "mult", "add")
+    muts.to.sim <- c(4)   # c(3,4,5)
+    coes.to.sim <- c(0.1, 0.3)   # c(0.1, 0.2, 0.3, 0.4, 0.5)
+    sigs.to.sim <- c(0.03, 0.06)
+    d.true <- 1
+    d.range <- c(0.1, 10)
+    w.wt <- 1
+    wts <- c(2,1)
+    n.reps.ea <- 10
+    for (mut.i in 1:length(muts.to.sim)){
+      n.muts <- muts.to.sim[mut.i]
+      print(paste("n.muts=", n.muts))
+      outdir <- system.file("extdata", package="Stickbreaker")
+      file.name <- paste(testdata.file, "_", n.muts, "muts.txt", sep="")
+      outpath <- paste(outdir, file.name, sep="/")
+      simulate.data.for.mod.selection(n.muts=n.muts, coes.to.sim, sigs.to.sim, mods.to.sim, d.true, d.range, w.wt,wts,  outpath, n.reps.ea=n.reps.ea)
+    }
+  }
+```
+
+
+
+### 2. Calculate posterior probabilities on each testing dataset {-}
+
+
+To do this, we need to tell it where the model was saved and where the testing data was saved. Note this code block can get turned off by setting `fit.test.data` to FALSE. Note tha the multinomial model we employ here to assign model seleciton was generated above in the section titled, "b. Fit training data to multinomial model for model selection". Also notice that the resulting posteriors are output to the 'extdir' folder and given a name that is the same as the source data file with this appended: `n.muts, "muts_wPosts.csv"`.
+
+```{r}
+  fit.test.data <- TRUE
+
+  model.file <- "nnet_mod_R2_P"
+  moddir <- system.file("models", package="Stickbreaker")
+  modpath <- paste(moddir, model.file, sep="/")
+  testdata.file <- "Test_simulated_fit_data"
+
+  muts.to.lyze <- c(4)   # The mutations to analyze
+  
+  
+  if (fit.test.data == TRUE){
+  
+    for (mut.i in 1:length(muts.to.lyze)){
+      n.muts <- muts.to.lyze[mut.i]
+      print(paste("muts =", n.muts))
+      modelin <- paste(modpath, "_", n.muts, "muts.rda", sep="")
+      mod <- readRDS(modelin)
+      
+      datadir <- system.file("extdata", package="Stickbreaker")
+      file.name <- paste(datadir, "/", testdata.file, "_", n.muts, "muts.txt", sep="")
+      test.data <- read.table(file.name, header=TRUE)
+    
+      posteriors <- as.data.frame(matrix(nrow=length(test.data[,1]), ncol=3))
+      colnames(posteriors)=c("add", "mult", "stick")
+    
+      for (j in 1:length(test.data[,1])){
+        posteriors[j,] <- predict(mod, newdata=test.data[j,], type="probs")
+      }
+    
+      test.data <- cbind(test.data, posteriors)  
+      outdata.file <- file.name <- paste(datadir, "/", testdata.file, "_", n.muts, "muts_wPosts.csv", sep="")
+      write.csv(x=test.data, file=file.name, row.names=FALSE)
+    }  #next mut.i
+  }  # end if fit.test.data==TRUE
+```
+
+### 3. Read in posteriors and assess performance {-}
+
+Note that the names of files being read in here are specified in the previous code chunk. This chunk creates  `posterior.list`, the top level corresponding to the number of mutations in the `muts.to.lyze` (i.e. mutations to anlayze). For each number of mutations, the `posterior.list` contains a dataframe summarizing the frequency of false rejections (`false.rej`=the frequency the true model is rejected), the frequency the true model is uniquely identified as correct (`true.unq`) and the mean posterior probability of the true model (`mean.post`). Note that `rej.cut` must be specified to do these calculations. It is the posterior probabiltiy below which a model is considered rejected.
+
+
+```{r}
+  muts.to.lyze <- c(4)
+  rej.cut <- 0.05       # consider model rejected when it has posterior < this
+  posterior.list <- vector("list", length(muts.to.lyze))
+  names(posterior.list) <- paste("muts.",  muts.to.lyze, sep="")
+  
+  for (mut.i in 1:length(muts.to.lyze)){
+     n.muts <- muts.to.lyze[mut.i]
+     datadir <- system.file("extdata", package="Stickbreaker")
+     indata.file <-  paste(datadir, "/", testdata.file, "_", n.muts, "muts_wPosts.csv", sep="")
+     data <- read.csv(file=indata.file, stringsAsFactors = FALSE)
+  
+     posterior.list[[mut.i]] <- summarize.posteriors.on.simulated.dataset(data, rej.cut)
+  }
+posterior.list[[1]]   # print to illustrate output
+```
+
+
+# IV. Other examples {-}
+
+We analyze two datasets in the code above (one in II. Basic Anlaysis and another in the first half of III. Detailed Features). Here we walk through analysis of another couple datasets to further illustrate the process.
+
+## A. Mutation pair data from bacteriophage {-}
+
+This data comes from Caudle, Miller and Rokyta, 2014, Environment determines epistatic patterns for a ssDNA virus, Genetics, 196(1):267-279. Note that in the raw data, the wild type has fitness of -4.1. While the additive and stickbreaking models deal with negative fitnesses just fine, it is problematic for the multiplicative model. We therefore shift the data so that wildtype is reassigned a value of 1.0.
+
+### 1. Fit models to data{-}
+
+```{r}
+	data(caudle.data)
+	fit.col <- which(colnames(caudle.data)=="Fitness")
+	n.singles <- fit.col-1
+	n.muts <- n.singles
+
+	fitness.shift <- -caudle.data$Fitness[1] + 1      # add this much to each fitness. Need wt to have positive fitness
+	caudle.data$Fitness <- caudle.data$Fitness + fitness.shift
+	geno.matrix <- geno.matrix.Caud <- caudle.data[,1:(fit.col-1)]
+	fit.matrix <- fit.matrix.Caud <- t(t(caudle.data[,fit.col:fit.col]))
+	wts <- c(2,1)
+	d.range <- c(max(fit.matrix)-fit.matrix[1], 2*max(fit.matrix))
+  d.adj.max <- 1.1
+  d.hat.MLE <- estimate.d.MLE(geno.matrix, fit.matrix, d.range=d.range, wts)
+  d.vect <- seq(d.range[1], d.range[2], length.out=100)
+  
+  # Visualize the likelihood of d
+  like.profile <- calc.stick.logLn(geno.matrix, fit.matrix, d.vect, wts)
+  plot(d.vect, like.profile, type="l", xlim=c(15,35), ylab="Log-likelihood", xlab="d")
+  abline(v=d.hat.MLE, lty="dashed")
+  
+  d.hat.RDB <- estimate.d.RDB(geno.matrix, fit.matrix, no.est=NA)$d.hat.RDB  # doesn't work for double data
+  d.hat.seq <- estimate.d.sequential(geno.matrix, fit.matrix, d.hat.MLE, d.hat.RDB, d.range)
+
+  fit.stick <- fit.stick.Caud <- fit.stick.model.given.d(geno.matrix, fit.matrix, d.hat.seq, wts=wts, run.regression=TRUE)
+  fit.mult <- fit.mult.Caud <- fit.mult.model(geno.matrix, fit.matrix, wts=wts)
+  fit.add <- fit.add.Caud <- fit.add.model(geno.matrix, fit.matrix, wts=wts)
+  fit.smry <- fit.smry.Caud <- summarize.fits.for.posterior.calc(fit.stick, fit.mult, fit.add)
+  
+  nmuts <- apply(geno.matrix, 1, sum)
+  col.v <- c("deepskyblue", "red", "yellow")
+
+  plot(x=fit.matrix, y=fit.stick$pred.matrix$pred, ylim=c(0,20), xlim=c(0,20), ylab="Model predicted fitness", xlab="Rescaled observed fitness", pch=21, bg=col.v[1], cex=1.1)
+  abline(0,1, lty="dashed")
+  points(x=fit.matrix, y=fit.mult$pred.matrix$pred, pch=21, bg=col.v[2], cex=0.9)  
+  points(x=fit.matrix, y=fit.add$pred.matrix$pred, pch=21, bg=col.v[3], cex=0.8)  
+	legend("topleft", pch=21, pt.bg=col.v, bty="n", legend=c("Stick", "Mult", "Add"))
+```
+
+### 2. Simulate training data matching this dataset and fit multinomial {-}
+
+As usual, you must specify priors and other parameters that control the training simulation process. Toggle `simulate.training.data.from.priors` to FALSE if you don't want to run this code.
+
+```{r}
+
+  simulate.training.data.from.priors <- FALSE
+
+  if (simulate.training.data.from.priors == TRUE){
+    mods.to.sim <- c("stick", "mult", "add")
+    coes.prior <- c(0.05, 0.5)
+    sigs.prior <- c(0, 0.25)
+    n.samps.per.mod <- 100
+    
+    d.true <- 1
+    d.range <- c(0.1, 10)
+    d.adj.max <- 1.1
+    w.wt <- 1
+    wts <- c(2,1)
+    print.interval <- 25
+    
+    outdir <- system.file("extdata", package="Stickbreaker")
+    file.name <- paste("Training_simulated_priors_fit_caudle_data.txt", sep="")
+    outpath <- paste(outdir, file.name, sep="/")
+    
+    simulate.partial.data.from.priors.for.mod.selection(geno.matrix, coes.prior=coes.prior, sigs.prior=sigs.prior, mods.to.sim=mods.to.sim, d.true=d.true, d.range=d.range, d.adj.max=d.adj.max, w.wt=w.wt, wts=wts, outpath=outpath, n.samps.per.mod=n.samps.per.mod, coe.sim.model="identical", coe.dist.par=NA, print.interval=25)
+  }
+```
+
+### 3. Fit training data to multinomial model {-}
+
+```{r, eval=TRUE, results="hide"}
+  
+  model.file <- "nnet_mod_R2_P_caudle"
+  moddir <- system.file("models", package="Stickbreaker")
+  modpath <- paste(moddir, model.file, sep="/")
+  data.file <- "Training_simulated_priors_fit_caudle_data.txt"
+  min.R2 <- -1
+
+  fit.multinomial <- FALSE
+  
+  if (fit.multinomial == TRUE){
+  
+    mod.formula <- as.formula(model ~ R2.stick + R2.mult + R2.add + P.stick + P.mult + P.add)
+    indir <- system.file("extdata", package="Stickbreaker")
+    inpath <- paste(indir, data.file, sep="/")
+    if (file.exists(inpath)){
+      data <- read.table(file=inpath, header=TRUE)
+      data$R2.stick[which(data$R2.stick<min.R2)] <- min.R2
+      data$R2.mult[which(data$R2.mult<min.R2)] <- min.R2
+      data$R2.add[which(data$R2.add<min.R2)] <- min.R2
+      fit.nmet.model <- fit.nnet.multinomial.regression(data, mod.formula)
+      m <- fit.nnet.multinomial.regression(data, mod.formula)
+      modelout <- paste(modpath, ".rda", sep="")
+      saveRDS(m, file=modelout)
+    }
+  }
+```
+
+### 4. Calculate posteriors on cauldle data {-}
+
+```{r, eval=TRUE}
+  model.file <- "nnet_mod_R2_P_caudle"
+  moddir <- system.file("models", package="Stickbreaker")
+  modpath <- paste(moddir, model.file, sep="/")
+  modelin <- paste(modpath, ".rda", sep="")
+  model <- readRDS(modelin)
+  post.data <- post.data.Caud <- calculate.posteriors.for.datasets(fit.smry.Caud,  model)
+  smry.w.probs.Caud <- as.list(post.data)
+  print(post.data.Caud)
+
+```
+
+The results shows that, of the three models, stickbreaking is a far better approximation than additive or multiplictive. When only given these three options, the posterior probability of stickbrekaing is > 99.8%. This result also shows how the method can be used with double data.
+
+## B. Synonymous recoded deleterious poliovirus data {-}
+
+This data is from Burns et al., 2006, Modulation of poliovirus replicative fitness in HeLa cells by
+deoptimization of synonymous codon usage in the capsid region, J. Virology 80(7):3259-3272. Note that the raw data are in plaque forming units per mL (PFU/mil). We make the log of this since when groth is exponential, growth rate should be proportional to the log of populaiton size.
+
+### 1. Fit data to models {-}
+
+```{r}
+  datadir <- system.file("data", package="Stickbreaker")
+  load(paste(datadir, "burns.data.rda", sep="/"))
+  data <- burns.data
+  wts <- c(2,1)
+  n.genos <- length(data[,1])
+  n.muts <- length(data[1,])-1
+  mut.i <- n.muts - 2
+  n.mut.i <- mut.i
+  geno.matrix <- geno.matrix.Burns <- data[,seq(1, n.muts)]
+  fit.matrix <- fit.matrix.Burns <-  as.matrix(data[,(n.muts+1)])
+  fit.matrix <- log(fit.matrix)
+  muts.by.geno <- apply(geno.matrix, 1, sum)
+  
+  d.range <- c(min(fit.matrix), max(fit.matrix)*1.5)
+  d.adj.max <- 1.1
+  d.hat.MLE <- estimate.d.MLE(geno.matrix, fit.matrix, d.range=d.range)
+  d.hat.RDB <- estimate.d.RDB(geno.matrix, fit.matrix)$d.hat.RDB
+  d.hat.seq <- estimate.d.sequential(geno.matrix, fit.matrix, d.hat.MLE, d.hat.RDB, d.range)
+  fit.stick <- fit.stick.Burns <- fit.stick.model.given.d(geno.matrix, fit.matrix, d.hat.seq, run.regression=TRUE)
+  fit.mult <- fit.mult.Burns <- fit.mult.model(geno.matrix, fit.matrix, wts=wts)
+  fit.add <- fit.add.Burns <- fit.add.model(geno.matrix, fit.matrix, wts=wts)
+  fit.smry <- fit.smry.Burns <- summarize.fits.for.posterior.calc(fit.stick, fit.mult, fit.add)
+  
+  lims=c(min(fit.matrix)*0.95, max(fit.matrix)*1.05)
+  preds <- as.data.frame(cbind(obs=fit.stick$pred.matrix$fit,stick=fit.stick$pred.matrix$pred, mult=fit.mult$pred.matrix$pred, add=fit.add$pred.matrix$pred))
+  rownames(preds) <- fit.stick$pred.matrix$string
+  max.fits <- apply(preds, 1, function(x) max(x[2:4]))
+  min.fits <- apply(preds, 1, function(x) min(x[2:4]))
+  
+  cex.v <- c(1,1,1)
+  lab.cex <- 0.75
+  leg.location <- "topleft"
+  leg.cex <- 1.2
+  col.v <- c("deepskyblue", "red", "yellow")
+  plot(y=preds$stick, x=preds$obs, pch=21, bg=col.v[1], xlim=lims, ylim=lims, cex=cex.v[1], xlab="Rescaled observed fitness", ylab="Model predicted fitness")
+  abline(0,1)
+  points(y=preds$mult, x=preds$obs, pch=21, bg=col.v[2], cex=cex.v[2])
+  points(y=preds$add, x=preds$obs, pch=21, bg=col.v[3], cex=cex.v[3])
+  text(y=min.fits, x=preds$obs, pos=1, off=1, srt=90, labels=rownames(preds), cex=lab.cex)
+  legend("topleft", bty="n", pch=rep(21, 3), pt.bg=col.v, legend=c("Stick", "Mult", "Add"), cex=leg.cex)
+```
+
+### 2. Simulate training data matching this dataset and fit multinomial {-}
+
+```{r}
+
+  simulate.training.data.from.priors <- FALSE
+
+  if (simulate.training.data.from.priors == TRUE){
+    mods.to.sim <- c("stick", "mult", "add")
+    coes.prior <- c(-0.05, -1)
+    sigs.prior <- c(0, 0.25)
+    n.samps.per.mod <- 100
+    
+    d.true <- 1
+    d.range <- c(1, 10)
+    d.adj.max <- 1.1
+    w.wt <- fit.matrix[1,1]
+    wts <- c(2,1)
+    print.interval <- 25
+    
+    outdir <- system.file("extdata", package="Stickbreaker")
+    file.name <- paste("Training_simulated_priors_fit_burns2_data.txt", sep="")
+    outpath <- paste(outdir, file.name, sep="/")
+    
+    simulate.partial.data.from.priors.for.mod.selection(geno.matrix, coes.prior=coes.prior, sigs.prior=sigs.prior, mods.to.sim=mods.to.sim, d.true=d.true, d.range=d.range, d.adj.max, w.wt=w.wt, wts=wts, outpath=outpath, n.samps.per.mod=n.samps.per.mod, coe.sim.model="identical", coe.dist.par=NA, print.interval=print.interval)
+
+  }
+```
+
+### 3. Fit training data to multinomial model {-}
+
+```{r, eval=TRUE, results="hide"}
+  
+  model.file <- "nnet_mod_R2_P_burns2"
+  moddir <- system.file("models", package="Stickbreaker")
+  modpath <- paste(moddir, model.file, sep="/")
+  data.file <- "Training_simulated_priors_fit_burns2_data.txt"
+
+  fit.multinomial <- TRUE
+  min.R2 <- -1
+  
+  if (fit.multinomial == TRUE){
+  
+    mod.formula <- as.formula(model ~ R2.stick + R2.mult + R2.add + P.stick + P.mult + P.add)
+    indir <- system.file("extdata", package="Stickbreaker")
+    inpath <- paste(indir, data.file, sep="/")
+    if (file.exists(inpath)){
+      data <- read.table(file=inpath, header=TRUE)
+      data$R2.stick[which(data$R2.stick<min.R2)] <- min.R2
+      data$R2.mult[which(data$R2.mult<min.R2)] <- min.R2
+      data$R2.add[which(data$R2.add<min.R2)] <- min.R2
+      fit.nmet.model <- fit.nnet.multinomial.regression(data, mod.formula)
+      m <- fit.nnet.multinomial.regression(data, mod.formula)
+      modelout <- paste(modpath, ".rda", sep="")
+      saveRDS(m, file=modelout)
+    }
+  }
+```
+
+### 4. Calculate posteriors on Burns data {-}
+
+```{r}
+  model.file <- "nnet_mod_R2_P_burns2"
+  moddir <- system.file("models", package="Stickbreaker")
+  modpath <- paste(moddir, model.file, sep="/")
+  modelin <- paste(modpath, ".rda", sep="")
+  mod <- readRDS(modelin)
+  post.probs <- post.probs.Burns <- calculate.posteriors.for.datasets(fit.smry.Burns, mod=mod)
+  print(post.probs.Burns)
+```
+
+In this case, the multinomial regression stronly favors the additive model as the best explanation of the data. 

@@ -10,12 +10,13 @@
 #' @param wts X
 #' @param n.samps.per.mod X
 #' @param min.R2 X
+#' @param print.interval Default = NA.
 #' @return List:\cr
 #' \code{$posteriors} Posterior probability of each epistasis model. \cr
 #' \code{$multinomial.model} Multinomial model fit to the simulated data used to assign posterior probabilities.
 #' @export
 
-simulate.data.calculate.posteriors <- function(fit.smry, data, analysis.name, coes.prior, sig.prior, d.range, d.adj.max, wts, n.samps.per.mod, min.R2){
+simulate.data.calculate.posteriors <- function(fit.smry, data, analysis.name, coes.prior, sig.prior, d.range, d.adj.max, wts, n.samps.per.mod, min.R2, print.interval=NA){
 
   n.genos <- length(data[,1])
   n.muts <- length(data[1,])-1
@@ -38,7 +39,8 @@ simulate.data.calculate.posteriors <- function(fit.smry, data, analysis.name, co
                                                       outpath=simdata.outpath,
                                                       n.samps.per.mod=n.samps.per.mod,
                                                       coe.sim.model="identical",
-                                                      coe.dist.par=NA)
+                                                      coe.dist.par=NA,
+                                                      print.interval)
 
   print("Fitting multinomial model to simulated data")
   data <- read.table(file=simdata.outpath, header=TRUE)
@@ -94,11 +96,11 @@ simulate.data.for.mod.selection <- function(n.muts, coes.to.sim, sigs.to.sim, mo
 
         for (rep.i in 1:n.reps.ea){
           if (model=="stick"){
-            fit.matrix <- simulate.stick.data(n.muts=n.muts, coes=coes, sigma=sig.val, d.true=d.true, w.wt=w.wt)$fit.matrix
+            fit.matrix <- simulate.stick.data(n.muts=n.muts, coes=coes, sigma=sig.val, d.true=d.true, w.wt=w.wt, geno.matrix)$fit.matrix
           } else if (model=="mult"){
-            fit.matrix <- simulate.mult.data(n.muts=n.muts, selcoes=coes, sigma=sig.val, w.wt=w.wt)$fit.matrix
+            fit.matrix <- simulate.mult.data(n.muts=n.muts, selcoes=coes, sigma=sig.val, w.wt=w.wt, geno.matrix)$fit.matrix
           } else if (model=="add"){
-            fit.matrix <- simulate.add.data(n.muts=n.muts, addcoes=coes, sigma=sig.val, w.wt=w.wt)$fit.matrix
+            fit.matrix <- simulate.add.data(n.muts=n.muts, addcoes=coes, sigma=sig.val, w.wt=w.wt, geno.matrix)$fit.matrix
           }
 
           # --- Fit data to each model ---
