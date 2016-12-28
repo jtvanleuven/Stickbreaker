@@ -1,5 +1,5 @@
 ---
-title: "Stickbreaker Vignette v2"
+title: "Stickbreaker Vignette"
 author: "Craig Miller and James Van Leuven"
 date: "`r date()`"
 output:
