@@ -66,7 +66,7 @@ The other items in the list returned from `fit.models()` are details of fit to e
 
 After the data has been fit to the three models, we use the summary fit statistics to assign posterior probabilities to the three models. This is done in three steps: (1) simulate data from priors, (2) fit simulated data to multinomial regression and (3) calcualte posterior probabilities.\cr
 
-*Priors etc.:* To simulate data you need to define priors and the number of replicate datasets to simulate. These are defined at the beginning of the next code block. `coes.prior` is a vector with the lower and upper bounds on the coefficients; `sig.prior` is the lower and upper bound on the $\sigma$. Priors are assumed to be uniformly distributed between these boundaries. `n.samps.per.mod` is the number of datasets to simulate per model. You may want to initially set this to a small value like 50 or 100 to check things are running and behaving properly. For a final analysis you should increase this number to 1000 or, better yet, 10000. Be warned that it will take some time to simulate 10000 datasets for each model. `d.range`, `d.adj.max`, and `wts` were discussed above. Finally, use `analysis.name` to assign a unique name so that the simulated fitted data and the multinomial model it leads to are saved with unique identifiers. These files may be of interest (and save you computing time) if you choose to tap into any of the detailed features detailed below. Simulated data and models fit to it are saved in the `inst' folder under `extdata/' and `models/' subfolders respectively.\cr
+*Priors etc.:* To simulate data you need to define priors and the number of replicate datasets to sim. These are defined at the beginning of the next code block. `coes.prior` is a vector with the lower and upper bounds on the coefficients; `sig.prior` is the lower and upper bound on the $\sigma$. Priors are assumed to be uniformly distributed between these boundaries. `n.samps.per.mod` is the number of datasets to simulate per model. You may want to initially set this to a small value like 50 or 100 to check things are running and behaving properly. For a final analysis you should increase this number to 1000 or, better yet, 10000. Be warned that it will take some time to simulate 10000 datasets for each model. `d.range`, `d.adj.max`, and `wts` were discussed above. Finally, use `analysis.name` to assign a unique name so that the simulated fitted data and the multinomial model it leads to are saved with unique identifiers. These files may be of interest (and save you computing time) if you choose to tap into any of the detailed features detailed below. Simulated data and models fit to it are saved in the `inst' folder under `extdata/' and `models/' subfolders respectively.\cr
 
 One input that warrants discussion is `min.R2`. As discussed in the paper, when a model fits a dataset very poorly, it can generate $R^2$ values < 1. Occassionally, very negative values are produces (e.g. -100). These values create problems for the multinomial regression because the vast majority of the predictive $R^2$ values are in the 0 to 1 interval. Preliminary analysis revealed the method is improved by replace large negative $R^2$ values with a modest negative value. `min.R2` defines what this modest negative value is. -1 is suggested and used throughout this work.\cr
 
@@ -83,7 +83,7 @@ Finally, notice the argument `print.interval`. When doing simulations, a replica
   min.R2 <- -1
   analysis.name <- "Test"
     
-  posterior.results <- simulate.data.calculate.posteriors(fit.results$fit.smry, data, analysis.name, coes.prior, sig.prior, d.range, d.adj.max, wts, n.samps.per.mod, min.R2, print.interval=25)
+  posterior.results <- sim.data.calculate.posteriors(fit.results$fit.smry, data, analysis.name, coes.prior, sig.prior, d.range, d.adj.max, wts, n.samps.per.mod, min.R2, print.interval=25)
 ```
 
 
@@ -264,7 +264,7 @@ Notice first we set the parameters: number of mutations, stickbreaking coefficie
   d.adj.max <- 1.1
 
   geno.matrix <- generate.geno.matrix(n=n.muts)
-  stick.sim.data <- simulate.stick.data(n.muts, coes, sigma, d.true, w.wt, geno.matrix)
+  stick.sim.data <- sim.stick.data(n.muts, coes, sigma, d.true, w.wt, geno.matrix)
   fit.matrix <- stick.sim.data$fit.matrix
   #print(fit.matrix)
 ```
@@ -280,7 +280,7 @@ Notice first we set the parameters: number of mutations, stickbreaking coefficie
   n.genos <- 2^n.muts     # number of genotypes in full network
 
   geno.matrix <- generate.geno.matrix(n=n.muts)
-  mult.sim.data <- simulate.mult.data(n.muts, selcoes, sigma, w.wt, geno.matrix)
+  mult.sim.data <- sim.mult.data(n.muts, selcoes, sigma, w.wt, geno.matrix)
   fit.matrix <- mult.sim.data$fit.matrix
   #print(fit.matrix)
 ```
@@ -296,21 +296,21 @@ Notice first we set the parameters: number of mutations, stickbreaking coefficie
   n.genos <- 2^n.muts     # number of genotypes in full network
 
   geno.matrix <- generate.geno.matrix(n=n.muts)
-  add.sim.data <- simulate.add.data(n.muts, addcoes, sigma, w.wt, geno.matrix)
+  add.sim.data <- sim.add.data(n.muts, addcoes, sigma, w.wt, geno.matrix)
   fit.matrix <- add.sim.data$fit.matrix
   #print(fit.matrix)
 ```
 
 ### 2. Batch of datasets  {-}
 
-Here we show how the code can be used to generate many datasets under a given model and then fit each of them to that same model. This is good for assessing estimation error and bias. Notice in the code block below that paramters are now defined as vectors: `mut.vals`, `coe.vals`, `sig.vals`.  The code will simulate under all combinations of the parmater values (i.e. the number of parameter combinations is `length(mut.vals) * length(coe.vals) * length(sig.vals)`). We also define the place to write the data to here.  If you have already simulated data and want to skip this step, set `simulate.batch.data <- FALSE` at the beginning of the next code block. Also notice we can supress update printing by setting `print.status` to FALSE. Finally, notice that there is a boolean argument called `run.regression`. This is used in model selection (next section). Here we are simply showing how to simulate data and, to save computational time, have toggled `run.regression` to FALSE. \cr
+Here we show how the code can be used to generate many datasets under a given model and then fit each of them to that same model. This is good for assessing estimation error and bias. Notice in the code block below that paramters are now defined as vectors: `mut.vals`, `coe.vals`, `sig.vals`.  The code will simulate under all combinations of the parmater values (i.e. the number of parameter combinations is `length(mut.vals) * length(coe.vals) * length(sig.vals)`). We also define the place to write the data to here.  If you have already simulated data and want to skip this step, set `sim.batch.data <- FALSE` at the beginning of the next code block. Also notice we can supress update printing by setting `print.status` to FALSE. Finally, notice that there is a boolean argument called `run.regression`. This is used in model selection (next section). Here we are simply showing how to simulate data and, to save computational time, have toggled `run.regression` to FALSE. \cr
 
 #### a. Stickbreaking {-}
 
-The only added complexity for stickbreaking is the `fit.methods` parameter. This refers to what method of estimating $d$ should be used. If set to `All` it will estimate $d$ using each possible method and output the results indivdiually (i.e. MLE, RDB, max, and seq). Or you can select an indivdiual method (e.g. `seq`. Use `?simulate.fit.stick.data.batch` to get details).
+The only added complexity for stickbreaking is the `fit.methods` parameter. This refers to what method of estimating $d$ should be used. If set to `All` it will estimate $d$ using each possible method and output the results indivdiually (i.e. MLE, RDB, max, and seq). Or you can select an indivdiual method (e.g. `seq`. Use `?sim.fit.stick.data.batch` to get details).
 
 ```{r}
-  simulate.batch.data <- TRUE
+  sim.batch.data <- TRUE
   
   mut.vals <- c(3,4,5)
   coe.vals <- c(0.1, 0.3, 0.5)
@@ -324,18 +324,18 @@ The only added complexity for stickbreaking is the `fit.methods` parameter. This
   d.max.adj <- 1.0
   run.regression <- FALSE  
     
-  if (simulate.batch.data == TRUE){
+  if (sim.batch.data == TRUE){
     outfile <- "Stick_batch_out_test"
     outdir <- system.file("extdata", package="Stickbreaker")
     outpath <- paste(outdir, outfile, sep="/")
-    simulate.fit.stick.data.batch(mut.vals=mut.vals, coe.vals=coe.vals, sig.vals=sig.vals, d.true=d.true, d.range=d.range, w.wt=w.wt, n.reps.ea=n.reps.ea, print.status=FALSE, fit.methods=fit.methods, outpath=outpath, wts, d.max.adj=d.max.adj, run.regression, RDB.method="pos")
+    sim.fit.stick.data.batch(mut.vals=mut.vals, coe.vals=coe.vals, sig.vals=sig.vals, d.true=d.true, d.range=d.range, w.wt=w.wt, n.reps.ea=n.reps.ea, print.status=FALSE, fit.methods=fit.methods, outpath=outpath, wts, d.max.adj=d.max.adj, run.regression, RDB.method="pos")
   }
 ```
 
 #### b. Multiplicative {-}
 
 ```{r}
-  simulate.batch.data <- TRUE
+  sim.batch.data <- TRUE
   
   mut.vals <- c(3,4,5)
   coe.vals <- c(0.1, 0.3, 0.5)
@@ -344,18 +344,18 @@ The only added complexity for stickbreaking is the `fit.methods` parameter. This
   n.reps.ea <- 5
   
   #--- mulitiplicative ---
-  if (simulate.batch.data == TRUE){
+  if (sim.batch.data == TRUE){
     outfile <- "Mult_batch_out_test"
     outdir <- system.file("extdata", package="Stickbreaker")
     outpath <- paste(outdir, outfile, sep="/")
-    simulate.fit.mult.add.data.batch(epi.model="mult", mut.vals=mut.vals, coe.vals=coe.vals, sig.vals=sig.vals, w.wt=w.wt, n.reps.ea=n.reps.ea, print.status=FALSE, outpath=outpath, wts)
+    sim.fit.mult.add.data.batch(epi.model="mult", mut.vals=mut.vals, coe.vals=coe.vals, sig.vals=sig.vals, w.wt=w.wt, n.reps.ea=n.reps.ea, print.status=FALSE, outpath=outpath, wts)
   }
 ```
 
 #### c. Additive {-}
 
 ```{r}
-  simulate.batch.data <- TRUE
+  sim.batch.data <- TRUE
   
   mut.vals <- c(3,4,5)
   coe.vals <- c(0.1, 0.3, 0.5)
@@ -363,11 +363,11 @@ The only added complexity for stickbreaking is the `fit.methods` parameter. This
   w.wt <- 1
   n.reps.ea <- 5
   
-  if (simulate.batch.data == TRUE){
+  if (sim.batch.data == TRUE){
     outfile <- "Add_batch_out_test"
     outdir <- system.file("extdata", package="Stickbreaker")
     outpath <- paste(outdir, outfile, sep="/")
-    simulate.fit.mult.add.data.batch(epi.model="add", mut.vals=mut.vals, coe.vals=coe.vals, sig.vals=sig.vals, w.wt=w.wt, n.reps.ea=n.reps.ea, print.status=FALSE, outpath=outpath, wts)
+    sim.fit.mult.add.data.batch(epi.model="add", mut.vals=mut.vals, coe.vals=coe.vals, sig.vals=sig.vals, w.wt=w.wt, n.reps.ea=n.reps.ea, print.status=FALSE, outpath=outpath, wts)
   }
 ```
 
@@ -384,15 +384,15 @@ We begin by focusing on training to full network data (i.e. when all `2^n.muts` 
 #### a. Simulate training data from priors {-}
 
 To perform model selection, our Bayesian approach is based on simulating data under each model
-and under a range of potential parameter values (i.e. priors). Each simulated dataset is fit to each of the three models. We simulate training data by drawing parameter values from uniform priors. Toggle \code{simulate.training.data.from.priors} to FALSE if you want to skip this or if you already have the data simulated. The parameter `n.samps.per.mod` defines how many datasets to simulate per model. Once you have the code running smoothly and you want to generate a training dataset to be used in further analysis, set this to large number (e.g. 10000). \cr
+and under a range of potential parameter values (i.e. priors). Each simulated dataset is fit to each of the three models. We simulate training data by drawing parameter values from uniform priors. Toggle \code{sim.training.data.from.priors} to FALSE if you want to skip this or if you already have the data simulated. The parameter `n.samps.per.mod` defines how many datasets to simulate per model. Once you have the code running smoothly and you want to generate a training dataset to be used in further analysis, set this to large number (e.g. 10000). \cr
 
 *Priors etc.*:  `coes.prior` and `sig.prior` specify the prior range of values to simulate coefficiets and sigma values from. Be sure these are reasonable ranges for the data you are dealing with. Also see II. Basic Analysis section above about priors and other definitions in this code block such as `d.range`, `d.adj.max`, and `wts`. `muts.to.sim` is a vector that defines the different number of mutations you want to simulate training datasets for.
 
 ```{r}
 
-  simulate.training.data.from.priors <- TRUE
+  sim.training.data.from.priors <- TRUE
 
-  if (simulate.training.data.from.priors == TRUE){
+  if (sim.training.data.from.priors == TRUE){
     coes.prior <- c(0.05, 0.5)
     sig.prior <- c(0, 0.25)
     n.samps.per.mod <- 100
@@ -410,7 +410,7 @@ and under a range of potential parameter values (i.e. priors). Each simulated da
       outdir <- system.file("extdata", package="Stickbreaker")
       file.name <- paste("Training_simulated_priors_fit_data_", n.muts, "muts.txt", sep="")
       outpath <- paste(outdir, file.name, sep="/")
-      simulate.data.from.priors.for.mod.selection(n.muts=n.muts, coes.prior=coes.prior, sigs.prior=sig.prior, mods.to.sim=c("stick", "mult", "add"), d.true=d.true, d.range=d.range, d.adj.max=d.adj.max, w.wt=w.wt, wts=wts, outpath=outpath, n.samps.per.mod=n.samps.per.mod, coe.sim.model="identical", coe.dist.par=NA, print.interval=print.interval)
+      sim.data.from.priors.for.mod.selection(n.muts=n.muts, coes.prior=coes.prior, sigs.prior=sig.prior, mods.to.sim=c("stick", "mult", "add"), d.true=d.true, d.range=d.range, d.adj.max=d.adj.max, w.wt=w.wt, wts=wts, outpath=outpath, n.samps.per.mod=n.samps.per.mod, coe.sim.model="identical", coe.dist.par=NA, print.interval=print.interval)
     } #next mut.i
   }
 ```
@@ -462,7 +462,7 @@ This is very similar to the full networks, except that we supply a particular da
 
 #### a. Generate a partial dataset to analyze {-}
 
-To have a dataset to work with, let's generate one. Suppose we have five mutations and engineer only the first and last steps (i.e. wildtype plus each indivdual mutation and the 5-mutant genotypes with each indivdiaul mutation removed.) This is done in the code block below. We also define coefficients and sigma values. Then we simulate a set of fitness values under the stickbreaking model using `simulate.stick.data()`.
+To have a dataset to work with, let's generate one. Suppose we have five mutations and engineer only the first and last steps (i.e. wildtype plus each indivdual mutation and the 5-mutant genotypes with each indivdiaul mutation removed.) This is done in the code block below. We also define coefficients and sigma values. Then we simulate a set of fitness values under the stickbreaking model using `sim.stick.data()`.
 
 ```{r}
   n.muts <- 5
@@ -470,7 +470,7 @@ To have a dataset to work with, let's generate one. Suppose we have five mutatio
   sigma <- 0.03
   geno.matrix <- generate.geno.matrix(5)
   geno.matrix <- geno.matrix[which(rowSums(geno.matrix) %in% c(0,1,4,5)),]
-  fit.matrix <- simulate.stick.data(n.muts, coes=coes, sigma=sigma, d.true=1, w.wt=1, geno.matrix)
+  fit.matrix <- sim.stick.data(n.muts, coes=coes, sigma=sigma, d.true=1, w.wt=1, geno.matrix)
 ```
 
 #### b. Simulate training data with same structure from priors {-}
@@ -491,7 +491,7 @@ Just as with full data, we now need to simulate data from the priors for trainin
   wts <- c(2,1)
   n.samps.per.mod <- 100
 
-  simulate.partial.data.from.priors.for.mod.selection(geno.matrix,
+  sim.partial.data.from.priors.for.mod.selection(geno.matrix,
                                                       coes.prior=coes.prior,
                                                       sigs.prior=sig.prior,
                                                       mods.to.sim=c("stick", "mult", "add"),
@@ -545,15 +545,15 @@ Here we simulate test datasets and ask: how well does the model selection proces
 
 ### 1. Simulate test datasets {-}
 
-In the next code block we simulate datasets at specified paramter values. More specifically, it is necessary to specify the vector of models to simulate (`mods.to.sim`), a vecgtor with the number of mutations to simulate (`muts.to.sim`), a vector with the coefficients to simulate (`coes.to.sim`) and a vector with the sigma values to simulate (`sigs.to.sim`). The code simulates `n.reps.ea` under all possible parameter value combinations. As elsewhere, `d.true`, `d.range`, and `wts` must be specified. Toggle `simulate.testing.data.from.vectors` to FALSE if you want to skip this or if you already have the data simulated. Like all other simualted data, this is written to `inst/extdata`. Notice that here we are not drawing parameter values from priors, but rather simulating at specified values. The function that simulates at specified values is `simulate.data.for.mod.selection()`.
+In the next code block we simulate datasets at specified paramter values. More specifically, it is necessary to specify the vector of models to simulate (`mods.to.sim`), a vecgtor with the number of mutations to simulate (`muts.to.sim`), a vector with the coefficients to simulate (`coes.to.sim`) and a vector with the sigma values to simulate (`sigs.to.sim`). The code simulates `n.reps.ea` under all possible parameter value combinations. As elsewhere, `d.true`, `d.range`, and `wts` must be specified. Toggle `sim.testing.data.from.vectors` to FALSE if you want to skip this or if you already have the data simulated. Like all other simualted data, this is written to `inst/extdata`. Notice that here we are not drawing parameter values from priors, but rather simulating at specified values. The function that simulates at specified values is `sim.data.for.mod.selection()`.
 
 ```{r}
 
-  simulate.testing.data.from.vectors <- TRUE
+  sim.testing.data.from.vectors <- TRUE
   testdata.file <- "Test_simulated_fit_data"
   
 
-  if (simulate.testing.data.from.vectors == TRUE){
+  if (sim.testing.data.from.vectors == TRUE){
     mods.to.sim <- c("stick", "mult", "add")   # only the strings "stick", "mult" and "add" are allowed
     muts.to.sim <- c(4)   # c(3,4,5)
     coes.to.sim <- c(0.1, 0.3)   # c(0.1, 0.2, 0.3, 0.4, 0.5)
@@ -569,7 +569,7 @@ In the next code block we simulate datasets at specified paramter values. More s
       outdir <- system.file("extdata", package="Stickbreaker")
       file.name <- paste(testdata.file, "_", n.muts, "muts.txt", sep="")
       outpath <- paste(outdir, file.name, sep="/")
-      simulate.data.for.mod.selection(n.muts=n.muts, coes.to.sim, sigs.to.sim, mods.to.sim, d.true, d.range, w.wt,wts,  outpath, n.reps.ea=n.reps.ea)
+      sim.data.for.mod.selection(n.muts=n.muts, coes.to.sim, sigs.to.sim, mods.to.sim, d.true, d.range, w.wt,wts,  outpath, n.reps.ea=n.reps.ea)
     }
   }
 ```
@@ -690,13 +690,13 @@ This data comes from Caudle, Miller and Rokyta, 2014, Environment determines epi
 
 ### 2. Simulate training data matching data structure {-}
 
-As usual, you must specify priors and other parameters that control the training simulation process. Toggle `simulate.training.data.from.priors` to FALSE if you don't want to run this code.
+As usual, you must specify priors and other parameters that control the training simulation process. Toggle `sim.training.data.from.priors` to FALSE if you don't want to run this code.
 
 ```{r}
 
-  simulate.training.data.from.priors <- TRUE
+  sim.training.data.from.priors <- TRUE
 
-  if (simulate.training.data.from.priors == TRUE){
+  if (sim.training.data.from.priors == TRUE){
     mods.to.sim <- c("stick", "mult", "add")
     coes.prior <- c(0.05, 0.5)
     sigs.prior <- c(0, 0.25)
@@ -713,7 +713,7 @@ As usual, you must specify priors and other parameters that control the training
     file.name <- paste("Training_simulated_priors_fit_caudle_data.txt", sep="")
     outpath <- paste(outdir, file.name, sep="/")
     
-    simulate.partial.data.from.priors.for.mod.selection(geno.matrix, coes.prior=coes.prior, sigs.prior=sigs.prior, mods.to.sim=mods.to.sim, d.true=d.true, d.range=d.range, d.adj.max=d.adj.max, w.wt=w.wt, wts=wts, outpath=outpath, n.samps.per.mod=n.samps.per.mod, coe.sim.model="identical", coe.dist.par=NA, print.interval=25)
+    sim.partial.data.from.priors.for.mod.selection(geno.matrix, coes.prior=coes.prior, sigs.prior=sigs.prior, mods.to.sim=mods.to.sim, d.true=d.true, d.range=d.range, d.adj.max=d.adj.max, w.wt=w.wt, wts=wts, outpath=outpath, n.samps.per.mod=n.samps.per.mod, coe.sim.model="identical", coe.dist.par=NA, print.interval=25)
   }
 ```
 
@@ -817,9 +817,9 @@ deoptimization of synonymous codon usage in the capsid region, J. Virology 80(7)
 
 ```{r}
 
-  simulate.training.data.from.priors <- TRUE
+  sim.training.data.from.priors <- TRUE
 
-  if (simulate.training.data.from.priors == TRUE){
+  if (sim.training.data.from.priors == TRUE){
     mods.to.sim <- c("stick", "mult", "add")
     coes.prior <- c(-0.05, -1)
     sigs.prior <- c(0, 0.25)
@@ -836,7 +836,7 @@ deoptimization of synonymous codon usage in the capsid region, J. Virology 80(7)
     file.name <- paste("Training_simulated_priors_fit_burns2_data.txt", sep="")
     outpath <- paste(outdir, file.name, sep="/")
     
-    simulate.partial.data.from.priors.for.mod.selection(geno.matrix, coes.prior=coes.prior, sigs.prior=sigs.prior, mods.to.sim=mods.to.sim, d.true=d.true, d.range=d.range, d.adj.max, w.wt=w.wt, wts=wts, outpath=outpath, n.samps.per.mod=n.samps.per.mod, coe.sim.model="identical", coe.dist.par=NA, print.interval=print.interval)
+    sim.partial.data.from.priors.for.mod.selection(geno.matrix, coes.prior=coes.prior, sigs.prior=sigs.prior, mods.to.sim=mods.to.sim, d.true=d.true, d.range=d.range, d.adj.max, w.wt=w.wt, wts=wts, outpath=outpath, n.samps.per.mod=n.samps.per.mod, coe.sim.model="identical", coe.dist.par=NA, print.interval=print.interval)
 
   }
 ```

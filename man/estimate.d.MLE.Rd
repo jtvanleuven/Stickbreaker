@@ -12,7 +12,7 @@ estimate.d.MLE(geno.matrix, fit.matrix, d.range, accuracy = 0.001,
 \code{\link{generate.geno.matrix}}}
 
 \item{fit.matrix}{Fitness matrix generated in
-\code{\link{simulate.stick.data}}}
+\code{\link{sim.stick.data}}}
 
 \item{d.range}{Interval of d to search for maximum over}
 

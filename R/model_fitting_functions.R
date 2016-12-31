@@ -45,7 +45,7 @@ fit.models <- function(data, d.range, d.adj.max=1.1, wts=c(2,1)){
 #' @param geno.matrix Genotype matrix generated in
 #'   \code{\link{generate.geno.matrix}} or read in
 #' @param fit.matrix Fitness matrix generated in
-#'   \code{\link{simulate.stick.data}} or read in
+#'   \code{\link{sim.stick.data}} or read in
 #' @param d.here The value of d estimates are based on
 #' @param wts Vector of weights to weight genotypes by. Used when
 #'   \code{\link{generate.geno.weight.matrix}} is called (see that function).
@@ -172,7 +172,7 @@ fit.stick.model.given.d <- function(geno.matrix, fit.matrix, d.here, wts=c(2,1),
 #' @param geno.matrix Genotype matrix generated in
 #'   \code{\link{generate.geno.matrix}} or read in
 #' @param fit.matrix Fitness matrix generated in
-#'   \code{\link{simulate.mult.data}} or read in
+#'   \code{\link{sim.mult.data}} or read in
 #' @param wts Vector of weights to weight genotypes by. Used when
 #'   \code{\link{generate.geno.weight.matrix}} is called (see that function).
 #'   Default is \code{c(2,1)}.
@@ -276,7 +276,7 @@ fit.mult.model <- function(geno.matrix, fit.matrix, wts=c(2,1)){
 #' @param geno.matrix Genotype matrix generated in
 #'   \code{\link{generate.geno.matrix}} or read in
 #' @param fit.matrix Fitness matrix generated in
-#'   \code{\link{simulate.mult.data}} or read in
+#'   \code{\link{sim.mult.data}} or read in
 #' @param wts Vector of weights to weight genotypes by. Used when
 #'   \code{\link{generate.geno.weight.matrix}} is called (see that function).
 #'   Default is \code{c(2,1)}.

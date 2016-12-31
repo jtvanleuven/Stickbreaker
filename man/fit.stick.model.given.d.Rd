@@ -12,7 +12,7 @@ fit.stick.model.given.d(geno.matrix, fit.matrix, d.here, wts = c(2, 1),
 \code{\link{generate.geno.matrix}} or read in}
 
 \item{fit.matrix}{Fitness matrix generated in
-\code{\link{simulate.stick.data}} or read in}
+\code{\link{sim.stick.data}} or read in}
 
 \item{d.here}{The value of d estimates are based on}
 

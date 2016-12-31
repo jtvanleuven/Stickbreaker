@@ -2,7 +2,7 @@
 #' Internal simulation function to generate a matrix to weight the genotypes when estimating d and stickbreaking coefficients
 #'
 #' @param geno.matrix Genotype matrix generated in \code{\link{generate.geno.matrix}}
-#' @param fit.matrix Fitness matrix generated in \code{\link{simulate.stick.data}}
+#' @param fit.matrix Fitness matrix generated in \code{\link{sim.stick.data}}
 #' @param wts Vector of weights to be applied of form c(singletons, multiples). Default \code{wts=c(2,1)}.
 #' @return weight.matrix
 #' @details To calculate the likelihood of the data under the stickbreaking model for a given value of d,
@@ -13,7 +13,6 @@
 #' the single mutations (singletons) are expected to have half the variance of all other comparisions (i.e. multiples). This
 #' function generates the weights matrix that reflects this. To change this assumption, change the \code{wts} parameter. For example,
 #' if the wild type has the same error as all other genotypes, \code{wts = c(1,1)} would be appropriate.
-#' @examples Examples here
 #' @export
 
 generate.geno.weight.matrix <- function(geno.matrix, fit.matrix, wts=c(2,1)){
@@ -62,35 +61,26 @@ generate.geno.weight.matrix <- function(geno.matrix, fit.matrix, wts=c(2,1)){
 }
 
 #' A dataset containing the fitness values for recombinant strains for Methylobacterium extorquens.
-#' Chou, H., H. Chiu, N. Delaney, D. Segrè and C. Marx, 2011 Diminishing returns epistasis among beneficial mutations decelerates adaptation. Science 332, 1190\–1192.
-#'
+#' @references Chou, H., Chiu, H., Delaney, N., Segre, D., and Marx, C. 2011. Diminishing returns epistasis among beneficial mutations decelerates adaptation. Science 332, 1190-1192.
+#' @usage data(Chou.data)
 #' @format A list of 5 elements containing integers (1 or 0) that indicate the absence or presence of mutated alleles at 4 loci and a numerical element with relative fitness values.
-#'
-#' @name chou.data
+#' @name Chou.data
 NULL
-#'
 #' A dataset containing the fitness values for recombinant poliovirus viruses.
-#' Burns, C.C., Shaw, J., Campagnoli, R., Jorba, J., Vincent, A., Quay, J., and Kew, O. (2006). Modulation of Poliovirus Replicative Fitness in HeLa Cells by Deoptimization of Synonymous Codon Usage in the Capsid Region. J Virol 80, 3259\-3272.
-#'
+#' @references Burns, C.C., Shaw, J., Campagnoli, R., Jorba, J., Vincent, A., Quay, J., and Kew, O. (2006). Modulation of Poliovirus Replicative Fitness in HeLa Cells by Deoptimization of Synonymous Codon Usage in the Capsid Region. J Virol 80, 3259-3272.
+#' @usage data(burns.data)
 #' @format A list of 5 elements containing integers (1 or 0) that indicate the absence or presence of mutated alleles at 4 loci and a numerical element with relative fitness values.
-#'
 #' @name burns.data
 NULL
-#'
 #' A dataset containing the fitness values for recombinant Escherichia coli bacteria.
-#' Khan, A. I., D. M. Dinh, D. Schneider, R. E. Lenski and T. F. Cooper, 2011 Negative epistasis between beneficial mutations in an evolving bacterial population. Science 332, 1193\-1196.
-#'
+#' @references Khan, A. I., D. M. Dinh, D. Schneider, R. E. Lenski and T. F. Cooper, 2011 Negative epistasis between beneficial mutations in an evolving bacterial population. Science 332, 1193-1196.
+#' @usage data(Khan.data)
 #' @format A list of 6 elements containing integers (1 or 0) that indicate the absence or presence of mutated alleles at 5 loci and a numerical element with relative fitness values.
-#'
 #' @name Khan.data
 NULL
-#'
-#'
-#'A dataset containing the fitness values for recombinant microviridae bacteriophage.
-#' Caudle, S. B., C. R. Miller and D. R. Rokyta, 2014 Environment determines epistatic patterns for a ssDNA virus. Genetics 196, 267\–279.
-#'
-#' @format A list of 12 elements containing integers (1 or 0) that indicate the absence or presence of mutated alleles at 9 loci, a numerical element with relative fitness values, a integer element showing number of replications, and an numerical element showing error rates.
-#'
+#' A dataset containing the fitness values for recombinant Escherichia coli bacteria.
+#' @references Khan, A. I., D. M. Dinh, D. Schneider, R. E. Lenski and T. F. Cooper, 2011 Negative epistasis between beneficial mutations in an evolving bacterial population. Science 332, 1193-1196.
+#' @usage data(Khan.data)
+#' @format A list of 6 elements containing integers (1 or 0) that indicate the absence or presence of mutated alleles at 5 loci and a numerical element with relative fitness values.
 #' @name caudle.data
 NULL
-#'

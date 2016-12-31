@@ -20,7 +20,7 @@ Used when simulating data for a complete network. Generally called internally du
 Minimum value of \code{n} is 2.
 }
 \seealso{
-\code{\link{simulate.stick.data}}
+\code{\link{sim.stick.data}}
 generate.geno.matrix(5)
 }
 

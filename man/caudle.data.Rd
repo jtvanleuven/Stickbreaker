@@ -2,11 +2,15 @@
 % Please edit documentation in R/fnxs_general.R
 \name{caudle.data}
 \alias{caudle.data}
-\title{A dataset containing the fitness values for recombinant microviridae bacteriophage.
-Caudle, S. B., C. R. Miller and D. R. Rokyta, 2014 Environment determines epistatic patterns for a ssdna virus. Genetics 196: 267\–279.}
-\format{A list of 12 elements containing integers (1 or 0) that indicate the absence or presence of mutated alleles at 9 loci, a numerical element with relative fitness values, a integer element showing number of replications, and an numerical element showing error rates.}
+\title{A dataset containing the fitness values for recombinant Escherichia coli bacteria.}
+\format{A list of 6 elements containing integers (1 or 0) that indicate the absence or presence of mutated alleles at 5 loci and a numerical element with relative fitness values.}
+\usage{
+data(Khan.data)
+}
 \description{
-A dataset containing the fitness values for recombinant microviridae bacteriophage.
-Caudle, S. B., C. R. Miller and D. R. Rokyta, 2014 Environment determines epistatic patterns for a ssdna virus. Genetics 196: 267\–279.
+A dataset containing the fitness values for recombinant Escherichia coli bacteria.
+}
+\references{
+Khan, A. I., D. M. Dinh, D. Schneider, R. E. Lenski and T. F. Cooper, 2011 Negative epistasis between beneficial mutations in an evolving bacterial population. Science 332, 1193-1196.
 }
 

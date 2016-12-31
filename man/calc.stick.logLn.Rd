@@ -11,7 +11,7 @@ calc.stick.logLn(geno.matrix, fit.matrix, d.vect, wts = c(2, 1))
 \code{\link{generate.geno.matrix}}}
 
 \item{fit.matrix}{Fitness matrix generated in
-\code{\link{simulate.stick.data}}}
+\code{\link{sim.stick.data}}}
 
 \item{d.vect}{Parameter to be maximized over}
 

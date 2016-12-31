@@ -2,12 +2,19 @@
 % Please edit documentation in R/model_selection_functions.R
 \name{fit.nnet.multinomial.regression}
 \alias{fit.nnet.multinomial.regression}
-\title{Fit training data to multinomial regression using \code{nnet} package}
+\title{Fit training data to multinomial regression using nnet package}
 \usage{
 fit.nnet.multinomial.regression(data, mod.formula)
 }
+\arguments{
+\item{data}{Dataset to fit}
+
+\item{mod.formula}{Formula to pass to the multinom function in nnet}
+}
+\value{
+Regression fit results for later analysis
+}
 \description{
-@param data Dataset to fit
- @export
+Fit training data to multinomial regression using nnet package
 }
 

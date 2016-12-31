@@ -9,7 +9,7 @@ generate.geno.weight.matrix(geno.matrix, fit.matrix, wts = c(2, 1))
 \arguments{
 \item{geno.matrix}{Genotype matrix generated in \code{\link{generate.geno.matrix}}}
 
-\item{fit.matrix}{Fitness matrix generated in \code{\link{simulate.stick.data}}}
+\item{fit.matrix}{Fitness matrix generated in \code{\link{sim.stick.data}}}
 
 \item{wts}{Vector of weights to be applied of form c(singletons, multiples). Default \code{wts=c(2,1)}.}
 }
@@ -28,8 +28,5 @@ on comparing pairs of genotypes: with and without the mutation. Therefore, estim
 the single mutations (singletons) are expected to have half the variance of all other comparisions (i.e. multiples). This
 function generates the weights matrix that reflects this. To change this assumption, change the \code{wts} parameter. For example,
 if the wild type has the same error as all other genotypes, \code{wts = c(1,1)} would be appropriate.
-}
-\examples{
-Examples here
 }
 

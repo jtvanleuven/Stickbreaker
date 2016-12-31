@@ -16,9 +16,9 @@
 #' @return List:\cr
 #' \code{$posteriors} Posterior probability of each epistasis model. \cr
 #' \code{$multinomial.model} Multinomial model fit to the simulated data used to assign posterior probabilities.
-#' @export simulate.data.calculate.posteriors
+#' @export sim.data.calculate.posteriors
 
-simulate.data.calculate.posteriors <- function(fit.smry, data, analysis.name, coes.prior, sig.prior, d.range, d.adj.max, wts, n.samps.per.mod, min.R2, print.interval=NA){
+sim.data.calculate.posteriors <- function(fit.smry, data, analysis.name, coes.prior, sig.prior, d.range, d.adj.max, wts, n.samps.per.mod, min.R2, print.interval=NA){
 
   n.genos <- length(data[,1])
   n.muts <- length(data[1,])-1
@@ -29,7 +29,7 @@ simulate.data.calculate.posteriors <- function(fit.smry, data, analysis.name, co
   simdata.file.name <- paste("simulated_data_from_priors_", analysis.name, ".txt", sep="")
   simdata.outpath <- paste(outdir, simdata.file.name, sep="/")
 
-  simulate.partial.data.from.priors.for.mod.selection(geno.matrix,
+  sim.partial.data.from.priors.for.mod.selection(geno.matrix,
                                                       coes.prior=coes.prior,
                                                       sigs.prior=sig.prior,
                                                       mods.to.sim=c("stick", "mult", "add"),
@@ -77,9 +77,9 @@ simulate.data.calculate.posteriors <- function(fit.smry, data, analysis.name, co
 #' @return Nothing. Instead results are written to \code{outpath} file for later analysis.
 #' @details Function loops over all parametric combinations and simulates datasets. For each dataset it
 #' fits to each of the models and outputs a row of metrics that summarize the fits.
-#' @export simulate.data.for.mod.selection
+#' @export sim.data.for.mod.selection
 
-simulate.data.for.mod.selection <- function(n.muts, coes.to.sim, sigs.to.sim, mods.to.sim, d.true, d.range, w.wt, wts, outpath, n.reps.ea, coe.sim.model="identical", coe.dist.par=NA){
+sim.data.for.mod.selection <- function(n.muts, coes.to.sim, sigs.to.sim, mods.to.sim, d.true, d.range, w.wt, wts, outpath, n.reps.ea, coe.sim.model="identical", coe.dist.par=NA){
   geno.matrix <- generate.geno.matrix(n.muts)
   first.results <- TRUE
   for (mod.i in 1:length(mods.to.sim)){
@@ -98,11 +98,11 @@ simulate.data.for.mod.selection <- function(n.muts, coes.to.sim, sigs.to.sim, mo
 
         for (rep.i in 1:n.reps.ea){
           if (model=="stick"){
-            fit.matrix <- simulate.stick.data(n.muts=n.muts, coes=coes, sigma=sig.val, d.true=d.true, w.wt=w.wt, geno.matrix)$fit.matrix
+            fit.matrix <- sim.stick.data(n.muts=n.muts, coes=coes, sigma=sig.val, d.true=d.true, w.wt=w.wt, geno.matrix)$fit.matrix
           } else if (model=="mult"){
-            fit.matrix <- simulate.mult.data(n.muts=n.muts, selcoes=coes, sigma=sig.val, w.wt=w.wt, geno.matrix)$fit.matrix
+            fit.matrix <- sim.mult.data(n.muts=n.muts, selcoes=coes, sigma=sig.val, w.wt=w.wt, geno.matrix)$fit.matrix
           } else if (model=="add"){
-            fit.matrix <- simulate.add.data(n.muts=n.muts, addcoes=coes, sigma=sig.val, w.wt=w.wt, geno.matrix)$fit.matrix
+            fit.matrix <- sim.add.data(n.muts=n.muts, addcoes=coes, sigma=sig.val, w.wt=w.wt, geno.matrix)$fit.matrix
           }
 
           # --- Fit data to each model ---
@@ -178,9 +178,9 @@ simulate.data.for.mod.selection <- function(n.muts, coes.to.sim, sigs.to.sim, mo
 #' "uniform" indicates to  sample individual coefficients from a uniform distribution: U(E[coe]-coe.dist.par, E[coe]+coe.dist.parm).
 #' "normal" means sample coefficients from normal distribuiton with mean E[coe] and sigma given by coe.dist.par.
 #' Default = "identical".
-#' @export simulate.data.from.priors.for.mod.selection
+#' @export sim.data.from.priors.for.mod.selection
 
-simulate.data.from.priors.for.mod.selection <- function(n.muts, coes.prior, sigs.prior, mods.to.sim, d.true, d.range, d.adj.max, w.wt, wts, outpath, n.samps.per.mod, coe.sim.model="identical", coe.dist.par=NA, print.interval=NA){
+sim.data.from.priors.for.mod.selection <- function(n.muts, coes.prior, sigs.prior, mods.to.sim, d.true, d.range, d.adj.max, w.wt, wts, outpath, n.samps.per.mod, coe.sim.model="identical", coe.dist.par=NA, print.interval=NA){
   geno.matrix <- generate.geno.matrix(n.muts)
   if (is.na(print.interval)==FALSE){
     print.pts <- c(1, seq(print.interval, n.samps.per.mod, by=print.interval))
@@ -211,11 +211,11 @@ simulate.data.from.priors.for.mod.selection <- function(n.muts, coes.prior, sigs
       sig.val <- runif(n=1, sigs.prior[1], sigs.prior[2])
 
       if (model=="stick"){
-        fit.matrix <- simulate.stick.data(n.muts=n.muts, coes=coes, sigma=sig.val, d.true=d.true, w.wt=w.wt, geno.matrix)$fit.matrix
+        fit.matrix <- sim.stick.data(n.muts=n.muts, coes=coes, sigma=sig.val, d.true=d.true, w.wt=w.wt, geno.matrix)$fit.matrix
       } else if (model=="mult"){
-        fit.matrix <- simulate.mult.data(n.muts=n.muts, selcoes=coes, sigma=sig.val, w.wt=w.wt, geno.matrix)$fit.matrix
+        fit.matrix <- sim.mult.data(n.muts=n.muts, selcoes=coes, sigma=sig.val, w.wt=w.wt, geno.matrix)$fit.matrix
       } else if (model=="add"){
-        fit.matrix <- simulate.add.data(n.muts=n.muts, addcoes=coes, sigma=sig.val, w.wt=w.wt, geno.matrix)$fit.matrix
+        fit.matrix <- sim.add.data(n.muts=n.muts, addcoes=coes, sigma=sig.val, w.wt=w.wt, geno.matrix)$fit.matrix
       }
 
       # --- Fit data to each model ---
@@ -275,8 +275,8 @@ fit.nnet.multinomial.regression <- function(data, mod.formula){
 
 #' Calculates posterior probabilities for each row of dataset given model
 #'
-#' @param data Dataset as generated by \code{\link{simulate.data.from.priors.for.mod.selection}}
-#' or \code{\link{simulate.data.for.mod.selection}}
+#' @param data Dataset as generated by \code{\link{sim.data.from.priors.for.mod.selection}}
+#' or \code{\link{sim.data.for.mod.selection}}
 #' @param mod Multinomial regression model from nnet package fit using the \code{\link{fit.nnet.multinomial.regression}} function.
 #' @return dataset with the posterior probabilities of add, mult and stick models bound (using cbind)
 #' to right edge of the supplied dataset.
@@ -302,8 +302,8 @@ calculate.posteriors.for.datasets <- function(data, mod){
 
 #'  Calculate classification performance on simulated data
 #'
-#' @param data Dataset as generated by \code{\link{simulate.data.from.priors.for.mod.selection}}
-#' or \code{\link{simulate.data.for.mod.selection}}
+#' @param data Dataset as generated by \code{\link{sim.data.from.priors.for.mod.selection}}
+#' or \code{\link{sim.data.for.mod.selection}}
 #' @param rej.cut Rejection cutoff point specifies at what posterior probability is a model rejected. Default is 0.05.
 #' @return Dataframe with false rejection rate, correct and unique classification rate, and
 #'  mean posterior probability for each parameter combination in the data.
@@ -383,9 +383,9 @@ summarize.posteriors.on.simulated.dataset <- function(data, rej.cut=0.05){
 #' "uniform" indicates to  sample individual coefficients from a uniform distribution: U(E[coe]-coe.dist.par, E[coe]+coe.dist.parm).
 #' "normal" means sample coefficients from normal distribuiton with mean E[coe] and sigma given by coe.dist.par.
 #' Default = "identical".
-#' @export simulate.partial.data.from.priors.for.mod.selection
+#' @export sim.partial.data.from.priors.for.mod.selection
 
-simulate.partial.data.from.priors.for.mod.selection <- function(geno.matrix, coes.prior, sigs.prior, mods.to.sim, d.true, d.range, d.adj.max, w.wt, wts, outpath, n.samps.per.mod, coe.sim.model="identical", coe.dist.par=NA, print.interval){
+sim.partial.data.from.priors.for.mod.selection <- function(geno.matrix, coes.prior, sigs.prior, mods.to.sim, d.true, d.range, d.adj.max, w.wt, wts, outpath, n.samps.per.mod, coe.sim.model="identical", coe.dist.par=NA, print.interval){
   n.muts <- length(geno.matrix[1,])
   if (is.na(print.interval)==FALSE){
     print.pts <- c(1, seq(print.interval, n.samps.per.mod, by=print.interval))
@@ -415,11 +415,11 @@ simulate.partial.data.from.priors.for.mod.selection <- function(geno.matrix, coe
       sig.val <- runif(n=1, sigs.prior[1], sigs.prior[2])
 
       if (model=="stick"){
-        fit.matrix <- simulate.stick.data(n.muts=n.muts, coes=coes, sigma=sig.val, d.true=d.true, w.wt=w.wt, geno.matrix)$fit.matrix
+        fit.matrix <- sim.stick.data(n.muts=n.muts, coes=coes, sigma=sig.val, d.true=d.true, w.wt=w.wt, geno.matrix)$fit.matrix
       } else if (model=="mult"){
-        fit.matrix <- simulate.mult.data(n.muts=n.muts, selcoes=coes, sigma=sig.val, w.wt=w.wt, geno.matrix)$fit.matrix
+        fit.matrix <- sim.mult.data(n.muts=n.muts, selcoes=coes, sigma=sig.val, w.wt=w.wt, geno.matrix)$fit.matrix
       } else if (model=="add"){
-        fit.matrix <- simulate.add.data(n.muts=n.muts, addcoes=coes, sigma=sig.val, w.wt=w.wt, geno.matrix)$fit.matrix
+        fit.matrix <- sim.add.data(n.muts=n.muts, addcoes=coes, sigma=sig.val, w.wt=w.wt, geno.matrix)$fit.matrix
       }
 
       # --- Fit data to each model ---

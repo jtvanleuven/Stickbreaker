@@ -3,7 +3,7 @@
 #' @param geno.matrix Genotype matrix generated in
 #'   \code{\link{generate.geno.matrix}}
 #' @param fit.matrix Fitness matrix generated in
-#'   \code{\link{simulate.stick.data}}
+#'   \code{\link{sim.stick.data}}
 #' @param d.vect Parameter to be maximized over
 #' @param wts Vector of weights to weight genotypes by. Used when
 #'   \code{\link{generate.geno.weight.matrix}} is called (see that function).
@@ -24,7 +24,7 @@ calc.stick.logLn <- function(geno.matrix, fit.matrix, d.vect, wts=c(2,1)){
 #' @param geno.matrix Genotype matrix generated in
 #'   \code{\link{generate.geno.matrix}}
 #' @param fit.matrix Fitness matrix generated in
-#'   \code{\link{simulate.stick.data}}
+#'   \code{\link{sim.stick.data}}
 #' @param d.range Interval of d to search for maximum over
 #' @param accuracy \code{tol} to send \code{optimize} function
 #' @param wts Vector of weights to weight genotypes by. Used when
@@ -49,7 +49,7 @@ estimate.d.MLE <- function(geno.matrix, fit.matrix, d.range, accuracy=0.001, wts
 #' @param geno.matrix Genotype matrix generated in
 #'   \code{\link{generate.geno.matrix}} or read in.
 #' @param fit.matrix Fitness matrix generated in
-#'   \code{\link{simulate.stick.data}} or read in.
+#'   \code{\link{sim.stick.data}} or read in.
 #' @param no.est What to return when no estimate is obtained. Default is -100. Throws warning unless a number of NA is used.
 #' @return List: \cr
 #'    [[1]] \code{d.hat} Is the best RDB estimate. It is the
@@ -118,7 +118,7 @@ estimate.d.RDB <- function(geno.matrix, fit.matrix, no.est=-100){   # calculates
 #' @param geno.matrix Genotype matrix generated in
 #'   \code{\link{generate.geno.matrix}} or read in.
 #' @param fit.matrix Fitness matrix generated in
-#'   \code{\link{simulate.stick.data}} or read in.
+#'   \code{\link{sim.stick.data}} or read in.
 #' @param d.hat.MLE The MLE estimate of d from \code{\link{estimate.d.MLE}}
 #' @param d.hat.RDB The estimate of d from \code{\link{estimate.d.RDB}}
 #' @param d.range Interval of d where MLE was searched. Defines when valid MLE exists (see details).

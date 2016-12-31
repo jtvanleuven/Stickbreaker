@@ -11,7 +11,7 @@ fit.mult.model(geno.matrix, fit.matrix, wts = c(2, 1))
 \code{\link{generate.geno.matrix}} or read in}
 
 \item{fit.matrix}{Fitness matrix generated in
-\code{\link{simulate.mult.data}} or read in}
+\code{\link{sim.mult.data}} or read in}
 
 \item{wts}{Vector of weights to weight genotypes by. Used when
 \code{\link{generate.geno.weight.matrix}} is called (see that function).

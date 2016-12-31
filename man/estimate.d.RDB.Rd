@@ -11,7 +11,7 @@ estimate.d.RDB(geno.matrix, fit.matrix, no.est = -100)
 \code{\link{generate.geno.matrix}} or read in.}
 
 \item{fit.matrix}{Fitness matrix generated in
-\code{\link{simulate.stick.data}} or read in.}
+\code{\link{sim.stick.data}} or read in.}
 
 \item{no.est}{What to return when no estimate is obtained. Default is -100. Throws warning unless a number of NA is used.}
 }

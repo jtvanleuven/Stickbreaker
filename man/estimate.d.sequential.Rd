@@ -12,7 +12,7 @@ estimate.d.sequential(geno.matrix, fit.matrix, d.hat.MLE, d.hat.RDB, d.range,
 \code{\link{generate.geno.matrix}} or read in.}
 
 \item{fit.matrix}{Fitness matrix generated in
-\code{\link{simulate.stick.data}} or read in.}
+\code{\link{sim.stick.data}} or read in.}
 
 \item{d.hat.MLE}{The MLE estimate of d from \code{\link{estimate.d.MLE}}}
 
