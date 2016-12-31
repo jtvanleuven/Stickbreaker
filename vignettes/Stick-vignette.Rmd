@@ -97,7 +97,7 @@ Read in data. See above (II. Basic Analysis) for format of data.
 
 ```{r}
   inpath <- system.file("data", package="Stickbreaker")
-  data <- read.csv(paste(inpath,"Khan.data4.csv",sep="/"))
+  data <- read.csv(paste(inpath,"Khan.data.csv",sep="/"))
 ```
 
 Define parameters to use in estimation (`wts`, `d.range` and `d.adj.max`). Again, these are discussed above. Then extract number of genotypes (`n.genos`), number of mutations (`n.muts`), the genotype matrix (`geno.matrix`; the 0/1 columns in the data) and the fitness matrix (`fit.matrix`; the last column in the data). 

@@ -62,7 +62,7 @@ generate.geno.weight.matrix <- function(geno.matrix, fit.matrix, wts=c(2,1)){
 }
 
 #' A dataset containing the fitness values for recombinant strains for Methylobacterium extorquens.
-#' Chou, H., H. Chiu, N. Delaney, D. Segrè and C. Marx, 2011 Diminishing returns epistasis among beneficial mutations decelerates adaptation. Science 332: 1190\–1192.
+#' Chou, H., H. Chiu, N. Delaney, D. Segrè and C. Marx, 2011 Diminishing returns epistasis among beneficial mutations decelerates adaptation. Science 332, 1190\–1192.
 #'
 #' @format A list of 5 elements containing integers (1 or 0) that indicate the absence or presence of mutated alleles at 4 loci and a numerical element with relative fitness values.
 #'
@@ -78,7 +78,7 @@ NULL
 NULL
 #'
 #' A dataset containing the fitness values for recombinant Escherichia coli bacteria.
-#' Khan, A. I., D. M. Dinh, D. Schneider, R. E. Lenski and T. F. Cooper, 2011 Negative epistasis between beneficial mutations in an evolving bacterial population. Science 332: 1193\-1196.
+#' Khan, A. I., D. M. Dinh, D. Schneider, R. E. Lenski and T. F. Cooper, 2011 Negative epistasis between beneficial mutations in an evolving bacterial population. Science 332, 1193\-1196.
 #'
 #' @format A list of 6 elements containing integers (1 or 0) that indicate the absence or presence of mutated alleles at 5 loci and a numerical element with relative fitness values.
 #'
@@ -87,7 +87,7 @@ NULL
 #'
 #'
 #'A dataset containing the fitness values for recombinant microviridae bacteriophage.
-#' Caudle, S. B., C. R. Miller and D. R. Rokyta, 2014 Environment determines epistatic patterns for a ssdna virus. Genetics 196: 267\–279.
+#' Caudle, S. B., C. R. Miller and D. R. Rokyta, 2014 Environment determines epistatic patterns for a ssDNA virus. Genetics 196, 267\–279.
 #'
 #' @format A list of 12 elements containing integers (1 or 0) that indicate the absence or presence of mutated alleles at 9 loci, a numerical element with relative fitness values, a integer element showing number of replications, and an numerical element showing error rates.
 #'
