@@ -33,7 +33,7 @@ suppressPackageStartupMessages({
 
 ## A. Data format {-}
 
-The data should be in a text file. If there are $n$ mutations in the dataset, there should be $n+1$ columns in the file. The first row (header row) should be mutation names. The data in the first $n$ columns are 0s and 1s that indicate the absence (0) or presence (1) of the mutation. All 0s indicates wild type; this needs to be the first row of data in the file. The last column is the estimated fitness of that genotype and should be titled `Fitness'. Columns to the right of thse are permitted and are not used in the analysis.
+The data should be in a text file. If there are $n$ mutations in the dataset, there should be $n+1$ columns in the file. The first row (header row) should be mutation names. The data in the first $n$ columns are 0s and 1s that indicate the absence (0) or presence (1) of the mutation. All 0s indicates wild type; this needs to be the first row of data in the file. The last column is the estimated fitness of that genotype and should be titled `Fitness'. Columns to the right of these are permitted and are not used in the analysis.
 
 ## B. Read in data {-}
 
@@ -45,13 +45,13 @@ The data should be in a text file. If there are $n$ mutations in the dataset, th
 
 ## C. Fit models {-}
 
-The `fit.models()` function is a wrapper that fits the data to all three models. First, it estimates $d$ and, using this estimate, fits the stickbreaking model. Then it fits the multipicative and additive models. If you want to do this fitting to models individually and better understand what is going on, see the Detailed Features section.\cr
+The `fit.models()` function is a wrapper that fits the data to all three models. First, it estimates $d$ and, using this estimate, fits the stickbreaking model. Then it fits the multiplicative and additive models. If you want to do this fitting to models individually and better understand what is going on, see the Detailed Features section.\cr
 
 To fit the models, you need to specify a few things. `d.range` specifies the range of possible values for $d$. If you fitness values are unusually large you may want to change this range. The upper bound is more important. The reason not to set this really large (say to 100 or 1000 when observed fitness values are say in the 1-20 range) is that the stickbreaking model approaches the additive model as $d$ gets large and the coefficients get small. By putting a modest upper bound on stickbreaking, we demand that additivity remains a distinct model.\cr
 
-When the stickbreaking model doesn't fit the data very well or when the data is really noise, the preffered ways to estimate $d$ can fail. Still, we need to fit the stickbrekaing model (albiet poorly) for comparision reason. We do this simply by multiplying the fitness distance between the wildtype and the largest observed fitness by a factor, `d.adj.max`. The default is 1.1. By making it only slightly above one, we again ensure that stickbreaking remains distinct from the additive model.\cr
+When the stickbreaking model doesn't fit the data very well or when the data is really noise, the proffered ways to estimate $d$ can fail. Still, we need to fit the stickbreaking model (albeit poorly) for comparison reason. We do this simply by multiplying the fitness distance between the wildtype and the largest observed fitness by a factor, `d.adj.max`. The default is 1.1. By making it only slightly above one, we again ensure that stickbreaking remains distinct from the additive model.\cr
 
-`wts` specifies how to weight single mutations (genotypes with one mutation on the wildtype background) vs all other genotypes when estimating the coefficients. If the wildtype fitness is know which much greater accuracy than the other genotypes as will typically be the case, then the comparisons to it will have lower variance than the other comparisions. The default weighting is `c(2,1)` which indicates to weight the single mutations twice as heavily as all others which corresponds to our assumption that the wildtype fitness is know without error while all other genotypes have the same error.
+`wts` specifies how to weight single mutations (genotypes with one mutation on the wildtype background) vs all other genotypes when estimating the coefficients. If the wildtype fitness is know which much greater accuracy than the other genotypes as will typically be the case, then the comparisons to it will have lower variance than the other comparisons. The default weighting is `c(2,1)` which indicates to weight the single mutations twice as heavily as all others which corresponds to our assumption that the wildtype fitness is know without error while all other genotypes have the same error.
 
 
 ```{r, echo=TRUE}
@@ -60,15 +60,15 @@ When the stickbreaking model doesn't fit the data very well or when the data is 
 
 `fit.models()` returns a list of results (assigned here to `fit.results`).  `fit.results$fit.smry` is the most important item. This is a vector of $R^2$ and P-scores--one each from the three models--that summarize model fits. These summary statistics will be used to determine the posterior probability of each model in the next code block. See paper for details about how these fit statistics are calculated. \cr
 
-The other items in the list returned from `fit.models()` are details of fit to each model: `$fit.stick`, `$fit.mult` and `$fit.add`. Each of these contains analagous information, itself organized as a list. [[1]] The coefficients (`$u.hats` for stickbreaking, `$s.hats` for multiplicative, and `$w.hats` for additive). [[2]] `$R2`.  [[3]] `$sig.hat` is estimate of $\sigma$. [[4]] `$log.like` is the log-likelihood of the data.  [[5]] `$regression.results` is itself another list with `$p.vals`, `lm.intercepts` and `lm.slopes` being the linear regression p-values, intercepts, and slopes for each mutation and `P` being the P-score. The last two items of `$regression.results` are matrices `$fitness.of.backs` and `$effects.matrix`. These are the data being regressed.  `$fitness.of.backs` gives the fitness of the background genotype when a given mutation (column) is added to create a given genotype (row). `$effects.matrix` gives the fitness effect that this mutation has when added in the background genotype under the model being considered.\cr
+The other items in the list returned from `fit.models()` are details of fit to each model: `$fit.stick`, `$fit.mult` and `$fit.add`. Each of these contains analogous information, itself organized as a list. [[1]] The coefficients (`$u.hats` for stickbreaking, `$s.hats` for multiplicative, and `$w.hats` for additive). [[2]] `$R2`.  [[3]] `$sig.hat` is estimate of $\sigma$. [[4]] `$log.like` is the log-likelihood of the data.  [[5]] `$regression.results` is itself another list with `$p.vals`, `lm.intercepts` and `lm.slopes` being the linear regression p-values, intercepts, and slopes for each mutation and `P` being the P-score. The last two items of `$regression.results` are matrices `$fitness.of.backs` and `$effects.matrix`. These are the data being regressed.  `$fitness.of.backs` gives the fitness of the background genotype when a given mutation (column) is added to create a given genotype (row). `$effects.matrix` gives the fitness effect that this mutation has when added in the background genotype under the model being considered.\cr
 
 ## D. Generate multinomial and calculate posterior probabilities {-}
 
-After the data has been fit to the three models, we use the summary fit statistics to assign posterior probabilities to the three models. This is done in three steps: (1) simulate data from priors, (2) fit simulated data to multinomial regression and (3) calcualte posterior probabilities.\cr
+After the data has been fit to the three models, we use the summary fit statistics to assign posterior probabilities to the three models. This is done in three steps: (1) simulate data from priors, (2) fit simulated data to multinomial regression and (3) calculate posterior probabilities.\cr
 
-*Priors etc.:* To simulate data you need to define priors and the number of replicate datasets to sim. These are defined at the beginning of the next code block. `coes.prior` is a vector with the lower and upper bounds on the coefficients; `sig.prior` is the lower and upper bound on the $\sigma$. Priors are assumed to be uniformly distributed between these boundaries. `n.samps.per.mod` is the number of datasets to simulate per model. You may want to initially set this to a small value like 50 or 100 to check things are running and behaving properly. For a final analysis you should increase this number to 1000 or, better yet, 10000. Be warned that it will take some time to simulate 10000 datasets for each model. `d.range`, `d.adj.max`, and `wts` were discussed above. Finally, use `analysis.name` to assign a unique name so that the simulated fitted data and the multinomial model it leads to are saved with unique identifiers. These files may be of interest (and save you computing time) if you choose to tap into any of the detailed features detailed below. Simulated data and models fit to it are saved in the `inst' folder under `extdata/' and `models/' subfolders respectively.\cr
+*Priors etc.:* To simulate data you need to define priors and the number of replicate datasets to simulate. These are defined at the beginning of the next code block. `coes.prior` is a vector with the lower and upper bounds on the coefficients; `sig.prior` is the lower and upper bound on the $\sigma$. Priors are assumed to be uniformly distributed between these boundaries. `n.samps.per.mod` is the number of datasets to simulate per model. You may want to initially set this to a small value like 50 or 100 to check things are running and behaving properly. For a final analysis you should increase this number to 1000 or, better yet, 10000. Be warned that it will take some time to simulate 10000 datasets for each model. `d.range`, `d.adj.max`, and `wts` were discussed above. Finally, use `analysis.name` to assign a unique name so that the simulated fitted data and the multinomial model it leads to are saved with unique identifiers. These files may be of interest (and save you computing time) if you choose to tap into any of the detailed features detailed below. Simulated data and models fit to it are saved in the `inst' folder under `extdata/' and `models/' subfolders respectively.\cr
 
-One input that warrants discussion is `min.R2`. As discussed in the paper, when a model fits a dataset very poorly, it can generate $R^2$ values < 1. Occassionally, very negative values are produces (e.g. -100). These values create problems for the multinomial regression because the vast majority of the predictive $R^2$ values are in the 0 to 1 interval. Preliminary analysis revealed the method is improved by replace large negative $R^2$ values with a modest negative value. `min.R2` defines what this modest negative value is. -1 is suggested and used throughout this work.\cr
+One input that warrants discussion is `min.R2`. As discussed in the paper, when a model fits a dataset very poorly, it can generate $R^2$ values < 1. Occasionally, very negative values are produces (e.g. -100). These values create problems for the multinomial regression because the vast majority of the predictive $R^2$ values are in the 0 to 1 interval. Preliminary analysis revealed the method is improved by replace large negative $R^2$ values with a modest negative value. `min.R2` defines what this modest negative value is. -1 is suggested and used throughout this work.\cr
 
 Finally, notice the argument `print.interval`. When doing simulations, a replicate counter will be printed to the console at the interval defined here. If set to `NA`, nothing is printed.
 
@@ -91,7 +91,7 @@ Finally, notice the argument `print.interval`. When doing simulations, a replica
 
 ## A. Data and Setup {-}
 
-Whereas above we used wrapper functions to do the entire analysis is just a few commands, here we walk through the various functions in greater deatil.
+Whereas above we used wrapper functions to do the entire analysis is just a few commands, here we walk through the various functions in greater detail.
 
 Read in data. See above (II. Basic Analysis) for format of data.
 
@@ -132,7 +132,7 @@ After getting an estimate for $d$, we call `fit.stick.model.given.d()`. This ret
 
 The function also performs a linear regression of background fitness against effect. When data are generated and analyzed under the same model, the slope of this regression line is expected to be zero for each mutation with p-values distributed U(0,1). When the data are generated and analyzed under untrue models, the regression line is expected to have non-zero slope and lower p-values. One regression is performed per mutation and we calculate a p-value. We then summarize the data across mutations by taking the sum of the logs of the p-values and call this sum the P-score. The more negative the P-score, the stronger the evidence against a model being correct. The regression results are returned under the list item `$regression.results` with the sub-items giving p-values (`$p.vals`), intercepts (`$lm.intercepts`), and slopes (`$lm.slopes`) and the overall P-score (`$P`).  The last two items of `$regression.results` are matrices `$fitness.of.backs` and `$effects.matrix`. These are the data being regressed.  `$fitness.of.backs` gives the fitness of the background genotype when a given mutation (column) is added to create a given genotype (row). `$effects.matrix` gives the fitness effect that this mutation has when added in the background genotype under the model considered.\cr
 
-The last item in the list returned by `fit.stick.model.given.d()` is a matrix, called `$pred.matrix`, that contains model predcited fitness for each genotypes (appended to the data itself along with error and a binary string that can be useful in producing plots).
+The last item in the list returned by `fit.stick.model.given.d()` is a matrix, called `$pred.matrix`, that contains model predicted fitness for each genotypes (appended to the data itself along with error and a binary string that can be useful in producing plots).
 
 ```{r}
   fit.stick <- fit.stick.model.given.d(geno.matrix, fit.matrix, d.hat.seq, run.regression=TRUE)
@@ -142,7 +142,7 @@ The last item in the list returned by `fit.stick.model.given.d()` is a matrix, c
 
 ### 2. Fit dataset to multiplicative model {-}
 
-Here we fit to the multiplicative model using `fit.mult.model()`. The output is exactly analagous to that returned from `fit.stick.model.given.d()` discussed immedietely above except the coefficients are named `$s.hats` (instead of `u.hats`).
+Here we fit to the multiplicative model using `fit.mult.model()`. The output is exactly analogous to that returned from `fit.stick.model.given.d()` discussed immediately above except the coefficients are named `$s.hats` (instead of `u.hats`).
 
 ```{r}
   fit.mult <- fit.mult.model(geno.matrix, fit.matrix, wts=wts)
@@ -246,7 +246,7 @@ Plot the figure just created.
 
 ## C. Simulation Machinery {-}
 
-The method itself uses simulations to calculate posterior probabilites. We also did a lot of simulation work in the study itself. We show the intersested user how to use the existing code to simulate datasets.
+The method itself uses simulations to calculate posterior probabilities. We also did a lot of simulation work in the study itself. We show the interested user how to use the existing code to simulate datasets using the sim functions.
 
 ### 1. Single Datasets {-}
 
@@ -303,11 +303,11 @@ Notice first we set the parameters: number of mutations, stickbreaking coefficie
 
 ### 2. Batch of datasets  {-}
 
-Here we show how the code can be used to generate many datasets under a given model and then fit each of them to that same model. This is good for assessing estimation error and bias. Notice in the code block below that paramters are now defined as vectors: `mut.vals`, `coe.vals`, `sig.vals`.  The code will simulate under all combinations of the parmater values (i.e. the number of parameter combinations is `length(mut.vals) * length(coe.vals) * length(sig.vals)`). We also define the place to write the data to here.  If you have already simulated data and want to skip this step, set `sim.batch.data <- FALSE` at the beginning of the next code block. Also notice we can supress update printing by setting `print.status` to FALSE. Finally, notice that there is a boolean argument called `run.regression`. This is used in model selection (next section). Here we are simply showing how to simulate data and, to save computational time, have toggled `run.regression` to FALSE. \cr
+Here we show how the code can be used to generate many datasets under a given model and then fit each of them to that same model. This is good for assessing estimation error and bias. Notice in the code block below that parameters are now defined as vectors: `mut.vals`, `coe.vals`, `sig.vals`.  The code will simulate under all combinations of the parameter values (i.e. the number of parameter combinations is `length(mut.vals) * length(coe.vals) * length(sig.vals)`). We also define the place to write the data to here.  If you have already simulated data and want to skip this step, set `sim.batch.data <- FALSE` at the beginning of the next code block. Also notice we can suppress update printing by setting `print.status` to FALSE. Finally, notice that there is a Boolean argument called `run.regression`. This is used in model selection (next section). Here we are simply showing how to simulate data and, to save computational time, have toggled `run.regression` to FALSE. \cr
 
 #### a. Stickbreaking {-}
 
-The only added complexity for stickbreaking is the `fit.methods` parameter. This refers to what method of estimating $d$ should be used. If set to `All` it will estimate $d$ using each possible method and output the results indivdiually (i.e. MLE, RDB, max, and seq). Or you can select an indivdiual method (e.g. `seq`. Use `?sim.fit.stick.data.batch` to get details).
+The only added complexity for stickbreaking is the `fit.methods` parameter. This refers to what method of estimating $d$ should be used. If set to `All` it will estimate $d$ using each possible method and output the results individually (i.e. MLE, RDB, max, and seq). Or you can select an individual method (e.g. `seq`. Use `?sim.fit.stick.data.batch` to get details).
 
 ```{r}
   sim.batch.data <- TRUE
@@ -375,7 +375,7 @@ The only added complexity for stickbreaking is the `fit.methods` parameter. This
 
 ## D. Model Selection {-}
 
-Now we concern ourselves with the process of assigning poseterior probability to each model.
+Now we concern ourselves with the process of assigning posterior probability to each model.
 
 ### 1. Full network data {-}
 
@@ -386,7 +386,7 @@ We begin by focusing on training to full network data (i.e. when all `2^n.muts` 
 To perform model selection, our Bayesian approach is based on simulating data under each model
 and under a range of potential parameter values (i.e. priors). Each simulated dataset is fit to each of the three models. We simulate training data by drawing parameter values from uniform priors. Toggle \code{sim.training.data.from.priors} to FALSE if you want to skip this or if you already have the data simulated. The parameter `n.samps.per.mod` defines how many datasets to simulate per model. Once you have the code running smoothly and you want to generate a training dataset to be used in further analysis, set this to large number (e.g. 10000). \cr
 
-*Priors etc.*:  `coes.prior` and `sig.prior` specify the prior range of values to simulate coefficiets and sigma values from. Be sure these are reasonable ranges for the data you are dealing with. Also see II. Basic Analysis section above about priors and other definitions in this code block such as `d.range`, `d.adj.max`, and `wts`. `muts.to.sim` is a vector that defines the different number of mutations you want to simulate training datasets for.
+*Priors etc.*:  `coes.prior` and `sig.prior` specify the prior range of values to simulate coefficients and sigma values from. Be sure these are reasonable ranges for the data you are dealing with. Also see II. Basic Analysis section above about priors and other definitions in this code block such as `d.range`, `d.adj.max`, and `wts`. `muts.to.sim` is a vector that defines the different number of mutations you want to simulate training datasets for.
 
 ```{r}
 
@@ -417,7 +417,7 @@ and under a range of potential parameter values (i.e. priors). Each simulated da
 
 #### b. Fit training data to multinomial model for model selection {-}
 
-Here we pass the training datasets to the `multinom()` function in the `nnet` package. It fits the data to a multinomial regression model and calculates the posterior probabillity of each model. We do this separately for each number of mutations. `fit.nnet.multinomial.regression()` is the function that handles this. The fitted model is then saved in the directory `inst/models` using the naming convention `nnet_mod_R2_P_nmuts.rda` where `nmuts` is the number of mutations in the data. If you want to skip the model fitting because it's already been done, set `fit.multinomial <- FALSE`. \cr
+Here we pass the training datasets to the `multinom()` function in the `nnet` package. It fits the data to a multinomial regression model and calculates the posterior probability of each model. We do this separately for each number of mutations. `fit.nnet.multinomial.regression()` is the function that handles this. The fitted model is then saved in the directory `inst/models` using the naming convention `nnet_mod_R2_P_nmuts.rda` where `nmuts` is the number of mutations in the data. If you want to skip the model fitting because it's already been done, set `fit.multinomial <- FALSE`. \cr
 
 Also note the defining of `min.R2`. See above for discussion of this input.
 
@@ -435,7 +435,7 @@ Also note the defining of `min.R2`. See above for discussion of this input.
   if (fit.multinomial == TRUE){
   
     mod.formula <- as.formula(model ~ R2.stick + R2.mult + R2.add + P.stick + P.mult + P.add)
-    muts.to.sim <- c(3,4,5)
+    muts.to.sim <- c(4)
     fit.nmet.models <- vector("list", length(muts.to.sim))
     for (mut.i in 1:length(muts.to.sim)){
       n.muts <- muts.to.sim[mut.i]
@@ -458,11 +458,11 @@ Also note the defining of `min.R2`. See above for discussion of this input.
 
 ### 2. Incomplete networks {-}
 
-This is very similar to the full networks, except that we supply a particular dataset structure (in the form of `geno.matrix`) and the simualtions are tailored to it. 
+This is very similar to the full networks, except that we supply a particular dataset structure (in the form of `geno.matrix`) and the simulations are tailored to it. 
 
 #### a. Generate a partial dataset to analyze {-}
 
-To have a dataset to work with, let's generate one. Suppose we have five mutations and engineer only the first and last steps (i.e. wildtype plus each indivdual mutation and the 5-mutant genotypes with each indivdiaul mutation removed.) This is done in the code block below. We also define coefficients and sigma values. Then we simulate a set of fitness values under the stickbreaking model using `sim.stick.data()`.
+To have a dataset to work with, let's generate one. Suppose we have five mutations and engineer only the first and last steps (i.e. wildtype plus each individual mutation and the 5-mutant genotypes with each individual mutation removed.) This is done in the code block below. We also define coefficients and sigma values. Then we simulate a set of fitness values under the stickbreaking model using `sim.stick.data()`.
 
 ```{r}
   n.muts <- 5
@@ -541,11 +541,11 @@ Everything here is exactly the same as with full sets of data.
 
 ## E. Assessing Model Selection {-}
 
-Here we simulate test datasets and ask: how well does the model selection process coverd in the last section perform? This was an important part of our paper; we include the relevant code blocks here in the event that the functions are useful to you.
+Here we simulate test datasets and ask: how well does the model selection process covers in the last section perform? This was an important part of our paper; we include the relevant code blocks here in the event that the functions are useful to you.
 
 ### 1. Simulate test datasets {-}
 
-In the next code block we simulate datasets at specified paramter values. More specifically, it is necessary to specify the vector of models to simulate (`mods.to.sim`), a vecgtor with the number of mutations to simulate (`muts.to.sim`), a vector with the coefficients to simulate (`coes.to.sim`) and a vector with the sigma values to simulate (`sigs.to.sim`). The code simulates `n.reps.ea` under all possible parameter value combinations. As elsewhere, `d.true`, `d.range`, and `wts` must be specified. Toggle `sim.testing.data.from.vectors` to FALSE if you want to skip this or if you already have the data simulated. Like all other simualted data, this is written to `inst/extdata`. Notice that here we are not drawing parameter values from priors, but rather simulating at specified values. The function that simulates at specified values is `sim.data.for.mod.selection()`.
+In the next code block we simulate datasets at specified parameter values. More specifically, it is necessary to specify the vector of models to simulate (`mods.to.sim`), a vector with the number of mutations to simulate (`muts.to.sim`), a vector with the coefficients to simulate (`coes.to.sim`) and a vector with the sigma values to simulate (`sigs.to.sim`). The code simulates `n.reps.ea` under all possible parameter value combinations. As elsewhere, `d.true`, `d.range`, and `wts` must be specified. Toggle `sim.testing.data.from.vectors` to FALSE if you want to skip this or if you already have the data simulated. Like all other simulated data, this is written to `inst/extdata`. Notice that here we are not drawing parameter values from priors, but rather simulating at specified values. The function that simulates at specified values is `sim.data.for.mod.selection()`.
 
 ```{r}
 
@@ -577,7 +577,7 @@ In the next code block we simulate datasets at specified paramter values. More s
 
 ### 2. Calculate posterior probabilities on each testing dataset {-}
 
-To do this, we need to tell it where the model was saved and where the testing data was saved. Note this code block can get turned off by setting `fit.test.data` to FALSE. The multinomial model we employ here to assign model seleciton was generated above in the section *b. Fit training data to multinomial model for model selection*. Also notice that the resulting posteriors are output to the 'inst/extdata' folder and given a name that is the same as the source data file with `n.muts` and then `muts_wPosts.csv` appended.
+To do this, we need to tell it where the model was saved and where the testing data was saved. Note this code block can get turned off by setting `fit.test.data` to FALSE. The multinomial model we employ here to assign model selection was generated above in the section *b. Fit training data to multinomial model for model selection*. Also notice that the resulting posteriors are output to the 'inst/extdata' folder and given a name that is the same as the source data file with `n.muts` and then `muts_wPosts.csv` appended.
 
 ```{r}
   fit.test.data <- TRUE
@@ -618,7 +618,7 @@ To do this, we need to tell it where the model was saved and where the testing d
 
 ### 3. Read in posteriors and assess performance {-}
 
-Note that the names of files being read in here are specified in the previous code chunk. This chunk creates  `posterior.list`, the top level corresponding to the number of mutations in the `muts.to.lyze` (i.e. mutations to anlayze). For each number of mutations, the `posterior.list` contains a dataframe summarizing the frequency of false rejections (`false.rej` is the frequency that the true model is rejected), `true.unq` is the frequency that the true model is uniquely identified as correct, and `mean.post` is the mean posterior probability of the true model. Note that `rej.cut` must be specified to do these calculations. It is the posterior probabiltiy below which a model is considered rejected.
+Note that the names of files being read in here are specified in the previous code chunk. This chunk creates  `posterior.list`, the top level corresponding to the number of mutations in the `muts.to.lyze` (i.e. mutations to analyze). For each number of mutations, the `posterior.list` contains a dataframe summarizing the frequency of false rejections (`false.rej` is the frequency that the true model is rejected), `true.unq` is the frequency that the true model is uniquely identified as correct, and `mean.post` is the mean posterior probability of the true model. Note that `rej.cut` must be specified to do these calculations. It is the posterior probability below which a model is considered rejected.
 
 
 ```{r}
@@ -761,12 +761,12 @@ As usual, you must specify priors and other parameters that control the training
 
 ```
 
-The results shows that, of the three models, stickbreaking is a far better approximation than additive or multiplictive. When only given these three options, the posterior probability of stickbrekaing is > 99.8%. This result also shows how the method can be used with this type of single- and double-mutation data.
+The results shows that, of the three models, stickbreaking is a far better approximation than additive or multiplicative. When only given these three options, the posterior probability of stickbreaking is > 99.8%. This result also shows how the method can be used with this type of single- and double-mutation data.
 
 ## B. Synonymous recoded deleterious poliovirus data {-}
 
-This data is from Burns et al., 2006, Modulation of poliovirus replicative fitness in HeLa cells by
-deoptimization of synonymous codon usage in the capsid region, J. Virology 80(7):3259-3272. Note that the raw data are in paper are plaque forming units per mL (PFU/mil). We take the log of this since when growth is exponential, growth rate will be proportional to the log of populaiton size.
+This data is from Burns et al., 2006, Modulation of poliovirus replication fitness in HeLa cells by
+deoptimization of synonymous codon usage in the capsid region, J. Virology 80(7):3259-3272. Note that the raw data are in paper are plaque forming units per mL (PFU/mil). We take the log of this since when growth is exponential, growth rate will be proportional to the log of population size.
 
 ### 1. Fit data to models {-}
 
@@ -815,7 +815,7 @@ deoptimization of synonymous codon usage in the capsid region, J. Virology 80(7)
 
 ### 2. Simulate training data matching this dataset {-}
 
-```{r}
+```{r, message=FALSE, warning=FALSE}
 
   sim.training.data.from.priors <- TRUE
 
@@ -883,4 +883,4 @@ deoptimization of synonymous codon usage in the capsid region, J. Virology 80(7)
   print(post.probs.Burns)
 ```
 
-In this case, the multinomial regression stronly favors the additive model as the best explanation of the data. 
+In this case, the multinomial regression strongly favors the additive model as the best explanation of the data. 
