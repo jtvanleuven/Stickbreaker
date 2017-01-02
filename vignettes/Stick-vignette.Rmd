@@ -76,7 +76,7 @@ Finally, notice the argument `print.interval`. When doing simulations, a replica
 ```{r, echo=TRUE}
   coes.prior <- c(0.05, 0.5)
   sig.prior <- c(0, 0.25)
-  n.samps.per.mod <- 50   # set to smaller value when setting code up; larger value when doing real analysis
+  n.samps.per.mod <- 1000   # set to smaller value when setting code up; larger value when doing real analysis
   d.range <- c(0.1, 10)
   d.adj.max <- 1.1
   wts <- c(2,1)
@@ -318,7 +318,7 @@ The only added complexity for stickbreaking is the `fit.methods` parameter. This
   w.wt <- 1
   d.true <- 1
   wts <- c(2,1)
-  n.reps.ea <- 5  # set to a small value to make code run fast 
+  n.reps.ea <- 10  # set to a small value just to make code run fast 
   d.range <- c(0.1, 10)
   fit.methods <- "seq"
   d.max.adj <- 1.0
@@ -341,7 +341,7 @@ The only added complexity for stickbreaking is the `fit.methods` parameter. This
   coe.vals <- c(0.1, 0.3, 0.5)
   sig.vals <- c(0.02, 0.05, 0.08)
   w.wt <- 1
-  n.reps.ea <- 5
+  n.reps.ea <- 10
   
   #--- mulitiplicative ---
   if (sim.batch.data == TRUE){
@@ -361,7 +361,7 @@ The only added complexity for stickbreaking is the `fit.methods` parameter. This
   coe.vals <- c(0.1, 0.3, 0.5)
   sig.vals <- c(0.02, 0.05, 0.08)
   w.wt <- 1
-  n.reps.ea <- 5
+  n.reps.ea <- 10
   
   if (sim.batch.data == TRUE){
     outfile <- "Add_batch_out_test"
@@ -395,13 +395,13 @@ and under a range of potential parameter values (i.e. priors). Each simulated da
   if (sim.training.data.from.priors == TRUE){
     coes.prior <- c(0.05, 0.5)
     sig.prior <- c(0, 0.25)
-    n.samps.per.mod <- 100
+    n.samps.per.mod <- 1000
     d.true <- 1
     d.range <- c(0.1, 10)
     d.adj.max <- 1.1
     w.wt <- 1
     wts <- c(2,1)
-    muts.to.sim <- c(4)   # vector
+    muts.to.sim <- c(4)   # vector; to simulate, for example, sets of 3, 4 and 5 mutations at once, use c(3,4,5)
     print.interval <- NA  # set to NA to block update printing
     
     for (mut.i in 1:length(muts.to.sim)){
@@ -489,7 +489,7 @@ Just as with full data, we now need to simulate data from the priors for trainin
   d.adj.max <- 1.1
   w.wt <- 1
   wts <- c(2,1)
-  n.samps.per.mod <- 100
+  n.samps.per.mod <- 1000
 
   sim.partial.data.from.priors.for.mod.selection(geno.matrix,
                                                       coes.prior=coes.prior,
@@ -562,7 +562,7 @@ In the next code block we simulate datasets at specified parameter values. More 
     d.range <- c(0.1, 10)
     w.wt <- 1
     wts <- c(2,1)
-    n.reps.ea <- 10
+    n.reps.ea <- 100
     for (mut.i in 1:length(muts.to.sim)){
       n.muts <- muts.to.sim[mut.i]
       print(paste("n.muts=", n.muts))
@@ -700,7 +700,7 @@ As usual, you must specify priors and other parameters that control the training
     mods.to.sim <- c("stick", "mult", "add")
     coes.prior <- c(0.05, 0.5)
     sigs.prior <- c(0, 0.25)
-    n.samps.per.mod <- 100
+    n.samps.per.mod <- 1000
     
     d.true <- 1
     d.range <- c(0.1, 10)
@@ -823,7 +823,7 @@ deoptimization of synonymous codon usage in the capsid region, J. Virology 80(7)
     mods.to.sim <- c("stick", "mult", "add")
     coes.prior <- c(-0.05, -1)
     sigs.prior <- c(0, 0.25)
-    n.samps.per.mod <- 100
+    n.samps.per.mod <- 1000
     
     d.true <- 1
     d.range <- c(1, 10)
