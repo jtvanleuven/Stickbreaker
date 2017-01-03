@@ -5,7 +5,6 @@
 #' @details Used when simulating data for a complete network. Generally called internally during simulations to create matrix for which fitness values will then be simulated.
 #' Minimum value of \code{n} is 2.
 #' @seealso \code{\link{sim.stick.data}}
-#' generate.geno.matrix(5)
 #' @export
 
 
@@ -40,11 +39,10 @@ generate.geno.matrix <- function(n){
 #' @param geno.matrix Specifies which genotypes to simulated.
 #' @return List:\cr
 #' [[1]] \code{fit.matrix} is matrix with (simulated) observed data \cr
-#' [[2]] \code{fit.matrix.exp} is same matrix wihtout error
+#' [[2]] \code{fit.matrix.exp} is same matrix without error
 #' @details Function takes coefficients (\code{coes}) and generates the expected
 #' fitness values for each genotype. This set of expected values is given in \code{fit.matrix.exp}.
 #' Then it adds normal error to them to produce the "observed" data (\code{fit.matrix}).
-#' sim.stick.data(5)
 #' @export
 
 sim.stick.data <- function(n.muts, coes, sigma, d.true, w.wt, geno.matrix,sim.geno.matrix){
@@ -66,36 +64,35 @@ sim.stick.data <- function(n.muts, coes, sigma, d.true, w.wt, geno.matrix,sim.ge
 #' @param d.true The distance to the boundary to use in simulations (d)
 #' @param d.range Vector of range values. When estimating d under MLE, what range should be searched (see details). Default is \code{c(0.1, 10)}.
 #' @param w.wt Fitness of the wildtype
-#' @param n.reps.ea Number of replictes per parametric condition
+#' @param n.reps.ea Number of replicates per parametric condition
 #' @param print.status \code{TRUE/FALSE}. Should loop counters be printed.
-#' @param fit.methods Vector of all methods of esimating d to then fit model and output results.
+#' @param fit.methods Vector of all methods of estimating d to then fit model and output results.
 #' Accepts "MLE", "RDB", "max", "seq", "RDB.all" and "All". "All" does all methods. Default is "seq". Case sensitive.
 #' @param outpath The path to write output files to (see details about file names).
-#' @param wts The weight assigned to wildtype vs other genotypes when estimating parmaeters (see details). Default c(2,1).
+#' @param wts The weight assigned to wildtype vs other genotypes when estimating parameters (see details). Default c(2,1).
 #' @param d.max.adj When forced to use the maximum estimator, the estimate is adjusted upwards
 #' by this factor (see details). Default = 1.1 (inflate observation 10\%).
 #' @param run.regression \code{TRUE/FALSE} Run regression analysis when fitting model. See details.
-#' @param RDB.method Inidcates which RDB method to use when doing sequential estimation. Options are "pos" and "all".
-#' "pos" option is better when mutations are strictly beneficial: "all" is appropriate when some or all mutaiton are
-#' deleterious.
+#' @param RDB.method Indicates which RDB method to use when doing sequential estimation. Options are "pos" and "all".
+#' "pos" option is better when mutations are strictly beneficial: "all" is appropriate when some or all mutations are deleterious.
 #' @details Function contains a loop for combining each value of mut.vals, coe.vals and sig.vals,
 #' generating data under the stickbreaking model and then fitting it. The fit.methods argument allows
 #' user to evaluate performance of multiple methods at one time. Note that estimate of d under MLE is
 #' restricted to \code{d.range}. Using a reasonable upper bound here is valuable so that the stickbreaking model
-#' remains distint from the additive model (i.e. as d gets large and the stickbreaking coefficients get small,
-#' the stickbreaking model converges to the additive model). \cr
+#' remains distant from the additive model (i.e. as d gets large and the stickbreaking coefficients get small,
+#' the stickbreaking model converges to the additive model). \cr\cr
 #' Results are written to files; the name of the output files are formed by concatenating the outpath
-#' argument to the item in the fit.methods. Separate files are genreated for each method (e.g. MLE, RDB, seq).
+#' argument to the item in the fit.methods. Separate files are generated for each method (e.g. MLE, RDB, seq).
 #' Separate files are also generated for each
 #' number of mutations (because the dimensionality of the output file changes with the number of mutations).
-#' The output files are tab-delimted text files with one row per replicate.
-#' The first 5 columns provide the parmaeter values and the rest of the columns give parameter estimates and
-#' measures of fit. \cr
-#' \code{wts}:  The coefficient estimates are obtained by weighted comparisions. The
-#' default is to give wild type to single mutation genotype comparisions twice the weight
-#' as all other comparisions based on the assumption that wild type is know
-#' with much lower error than the other genotypes (actually it is assumed to be known with no error). \cr
-#'  \code{run.regression} If you are doing simualtions to assess parameter estimation only, you don't need to run
+#' The output files are tab-delimited text files with one row per replicate.
+#' The first 5 columns provide the parameter values and the rest of the columns give parameter estimates and
+#' measures of fit. \cr\cr
+#' \code{wts}:  The coefficient estimates are obtained by weighted comparisons. The
+#' default is to give wild type to single mutation genotype comparisons twice the weight
+#' as all other comparisons based on the assumption that wild type is know
+#' with much lower error than the other genotypes (actually it is assumed to be known with no error). \cr\cr
+#'  \code{run.regression} If you are doing simulations to assess parameter estimation only, you don't need to run
 #'  regression. If you are using this function to generate data for model fitting, then this should be set to \code{TRUE}.
 #' @return Nothing. Instead results are written to output files and deposited in inst/extdata.
 #' The files are named by appending the method
@@ -170,12 +167,6 @@ sim.fit.stick.data.batch <- function(mut.vals, coe.vals, sig.vals, d.true, d.ran
 }
 
 
-
-
-
-
-
-
 #' Simulate data under multiplicative model.
 #'
 #' @param n.muts Number of mutations.
@@ -185,7 +176,7 @@ sim.fit.stick.data.batch <- function(mut.vals, coe.vals, sig.vals, d.true, d.ran
 #' @param geno.matrix Specifies which genotypes are simulated.
 #' @return List:\cr
 #' [[1]] \code{fit.matrix} is matrix with (simulated) observed data \cr
-#' [[2]] \code{fit.matrix.exp} is same matrix wihtout error
+#' [[2]] \code{fit.matrix.exp} is same matrix without error
 #' @details Function takes selection coefficients (\code{selcoes}) and generates the expected
 #' fitness values for each genotype. This set of expected values is returned as \code{fit.matrix.exp}.
 #' Then it adds normal error to them to produce the "observed" data (\code{fit.matrix}).
@@ -202,8 +193,6 @@ sim.mult.data <- function(n.muts, selcoes, sigma, w.wt, geno.matrix){
 }
 
 
-
-
 #' Simulate data under additive model.
 #'
 #' @param n.muts Number of mutations.
@@ -213,7 +202,7 @@ sim.mult.data <- function(n.muts, selcoes, sigma, w.wt, geno.matrix){
 #' @param geno.matrix Specifies which genotypes are simulated.
 #' @return List:\cr
 #' [[1]] \code{fit.matrix} is matrix with (simulated) observed data \cr
-#' [[2]] \code{fit.matrix.exp} is same matrix wihtout error
+#' [[2]] \code{fit.matrix.exp} is same matrix without error
 #' @details Function takes additive effects (\code{addcoes}) and generates the expected
 #' fitness values for each genotype. This set of expected values is returned as \code{fit.matrix.exp}.
 #' Then it adds normal error to them to produce the "observed" data (\code{fit.matrix}).
@@ -233,19 +222,17 @@ sim.add.data <- function(n.muts, addcoes, sigma, w.wt, geno.matrix){
 
 
 
-
-
-#' Simulate and fitness batch data under multiplicative and additive models
+#' Simulate fitness data under multiplicative and additive models
 #'
 #' @param epi.model \code{mult/add} Epistasis model to simulate under.
 #' @param mut.vals Vector of number of mutations to simulate
 #' @param coe.vals Vector of stickbreaking coefficients to simulate
 #' @param sig.vals Vector of sigma values to simulate
 #' @param w.wt Fitness of the wildtype. Default 1.
-#' @param n.reps.ea Number of replictes per parametric condition
+#' @param n.reps.ea Number of replicates per parametric condition
 #' @param print.status TRUE/FALSE. Should loop counters be printed.
 #' @param outpath The path to write output files to (see details about file names).
-#' @param wts Weigth to give mutation on wildtype background vs other backgrounds. Default is c(2,1).
+#' @param wts Weight to give mutation on wildtype background vs other backgrounds. Default is c(2,1).
 #'
 #' @details Function contains a loop for combining each value of mut.vals, coe.vals and sig.vals,
 #' generating data under the specified model and then fitting it. \cr
@@ -253,8 +240,8 @@ sim.add.data <- function(n.muts, addcoes, sigma, w.wt, geno.matrix){
 #' Results are written to files; the name of the output files are formed by concatenating the outpath argument to
 #' the epi.model argument. Separate files are generated for each
 #' number of mutations (because the dimensionality of the output file changes with the number of mutations).
-#' The output files are tab-delimted text files with one row per replicate.
-#' The first 5 columns provide the parmaeter values and the rest of the columns give parameter estimates and
+#' The output files are tab-delimited text files with one row per replicate.
+#' The first 5 columns provide the parameter values and the rest of the columns give parameter estimates and
 #' measures of fit.
 #' @return Nothing. Instead results are written to output files and deposited in inst/extdata.
 #' The files are named by appending the method

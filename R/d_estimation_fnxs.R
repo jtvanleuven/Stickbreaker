@@ -8,7 +8,7 @@
 #' @param wts Vector of weights to weight genotypes by. Used when
 #'   \code{\link{generate.geno.weight.matrix}} is called (see that function).
 #'   Default is \code{c(2,1)}, meaning weight single-mutation genotypes twice as heavily as others.
-#'   Alternatively, vector of weigths corresponding to geno.matrix can be provided.
+#'   Alternatively, vector of weights corresponding to geno.matrix can be provided.
 #' @return Vector of log-likelihoods
 #' @details Calls \code{fit.stick.model.given.d} to get log likelihood
 #' @export
@@ -30,7 +30,7 @@ calc.stick.logLn <- function(geno.matrix, fit.matrix, d.vect, wts=c(2,1)){
 #' @param wts Vector of weights to weight genotypes by. Used when
 #'   \code{\link{generate.geno.weight.matrix}} is called (see that function).
 #'   Default is \code{c(2,1)}, meaning weight single-mutation genotypes twice as heavily as others.
-#'   Alternatively, vector of weigths corresponding to geno.matrix can be provided.
+#'   Alternatively, vector of weights corresponding to geno.matrix can be provided.
 #' @return MLE of d
 #' @details Maximizes the function \code{\link{calc.stick.logLn}} using \code{\link{optimize}}
 #' @export
@@ -54,14 +54,14 @@ estimate.d.MLE <- function(geno.matrix, fit.matrix, d.range, accuracy=0.001, wts
 #' @return List: \cr
 #'    [[1]] \code{d.hat} Is the best RDB estimate. It is the
 #'   median of the positive individual RDB values. \cr
-#'   [[2]] \code{d.hat.RDB.all} RDB estimate based on all individual estimates (not only postive values). \cr
-#'   [[3]] \code{d.hat.RDB.ind} Vector of indivdiual RDB values (see detals).\cr
-#'   [[4]] \code{d.hat.RDB.other} has alterantive ways to combine the individual
-#'   RDB esitmates (i.e. median, mean, all values, postive values only).\cr
+#'   [[2]] \code{d.hat.RDB.all} RDB estimate based on all individual estimates (not only postie values). \cr
+#'   [[3]] \code{d.hat.RDB.ind} Vector of individual RDB values (see desalt).\cr
+#'   [[4]] \code{d.hat.RDB.other} has alternative ways to combine the individual
+#'   RDB estimates (i.e. median, mean, all values, postie values only).\cr
 #'   \code{d.hat.median.pos} is preferred estimator (\code{d.hat} above) from
-#'   the median of positive indivdiual values. \cr \code{d.hat.median} is median
+#'   the median of positive individual values. \cr \code{d.hat.median} is median
 #'   of all values. \cr \code{d.hat.mean} is mean of all values.\cr
-#'   \code{d.hat.mean.pos} is mean of postiive values.
+#'   \code{d.hat.mean.pos} is mean of positive values.
 #' @details The method calculates RDB for each genotype and its complement. The
 #'   \code{d.hat.RDB.all} indicate the genotype pair that produces the estimate.
 #' @export
@@ -125,7 +125,7 @@ estimate.d.RDB <- function(geno.matrix, fit.matrix, no.est=-100){   # calculates
 #' @param d.max.adj When forced to use the maximum estimator, the estimate is adjusted upwards
 #' by this factor (see details). Default = 1.1 (inflate observation 10\%).
 #' @return Estimate of d. Name indicates methods used.
-#' @details If a valid MLE exists, function returns it. When MLE is at the boudnary
+#' @details If a valid MLE exists, function returns it. When MLE is at the boundary
 #' as defined by \code{d.range} or less than the observed distance from wild type fitness to the maximum fitness,
 #' this is not considered a valid estimate. If MLE is not valid, but RDB
 #' estimate exists, it returns RDB estimate. If neither exists, returns the Max estimated.
