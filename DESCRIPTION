@@ -11,14 +11,13 @@ Description: Genetically modified organisms are used to test the phenotypic effe
    (additive, multiplicative, and stickbreaking) to fitness data and suggests the best
    fitting model by multinomial regression. Stickbreaker can also be used to simulate
    fitness data.
-Depends: R (>= 3.3.2)
+Depends: R (>= 3.3.1)
 License: GPL-3
 LazyData: TRUE
 RoxygenNote: 5.0.1.9000
 Imports: nnet, lattice, xtable
 Suggests: knitr, rmarkdown
 VignetteBuilder: knitr
-NeedsCompilation: no
 Packaged: 2017-01-04 19:17:09 UTC; JT
 Author: Craig Miller [aut],
   James Van Leuven [cre]
