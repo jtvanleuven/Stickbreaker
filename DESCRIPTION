@@ -1,6 +1,6 @@
 Package: Stickbreaker
 Type: Package
-Title: Fits stickbreaking, multiplicative and additive models to data (Title Case)
+Title: Fits Stickbreaking, Multiplicative and Additive Models to Data
 Version: 0.1.0
 Authors@R: c(
     person("Craig", "Miller", email = "crmiller@uidaho.edu", role = "aut"),
@@ -15,11 +15,11 @@ Depends: R (>= 3.3.2)
 License: GPL-3
 LazyData: TRUE
 RoxygenNote: 5.0.1.9000
-Imports:
-    nnet,
-    lattice,
-    xtable
-Suggests:
-    knitr,
-    rmarkdown
+Imports: nnet, lattice, xtable
+Suggests: knitr, rmarkdown
 VignetteBuilder: knitr
+NeedsCompilation: no
+Packaged: 2017-01-04 19:17:09 UTC; JT
+Author: Craig Miller [aut],
+  James Van Leuven [cre]
+Maintainer: James Van Leuven <jtvanleuven@gmail.com>

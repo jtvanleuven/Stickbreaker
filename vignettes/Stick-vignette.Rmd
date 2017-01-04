@@ -13,7 +13,12 @@ output:
     number_sections: yes
     toc: yes
     toc_depth: 5
-csl: apa.csl  
+vignette: >
+  %\VignetteIndexEntry{Stickbreaker Vignette}
+  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteEncoding{UTF-8}
+csl: apa.csl
+self_contained: no
 ---
 
 # I. Introduction {-}
@@ -76,7 +81,7 @@ Finally, notice the argument `print.interval`. When doing simulations, a replica
 ```{r, echo=TRUE}
   coes.prior <- c(0.05, 0.5)
   sig.prior <- c(0, 0.25)
-  n.samps.per.mod <- 1000   # set to smaller value when setting code up; larger value when doing real analysis
+  n.samps.per.mod <- 50   # set to smaller value when setting code up; larger value when doing real analysis
   d.range <- c(0.1, 10)
   d.adj.max <- 1.1
   wts <- c(2,1)
@@ -395,7 +400,7 @@ and under a range of potential parameter values (i.e. priors). Each simulated da
   if (sim.training.data.from.priors == TRUE){
     coes.prior <- c(0.05, 0.5)
     sig.prior <- c(0, 0.25)
-    n.samps.per.mod <- 1000
+    n.samps.per.mod <- 50
     d.true <- 1
     d.range <- c(0.1, 10)
     d.adj.max <- 1.1
@@ -489,7 +494,7 @@ Just as with full data, we now need to simulate data from the priors for trainin
   d.adj.max <- 1.1
   w.wt <- 1
   wts <- c(2,1)
-  n.samps.per.mod <- 1000
+  n.samps.per.mod <- 50
 
   sim.partial.data.from.priors.for.mod.selection(geno.matrix,
                                                       coes.prior=coes.prior,
@@ -700,7 +705,7 @@ As usual, you must specify priors and other parameters that control the training
     mods.to.sim <- c("stick", "mult", "add")
     coes.prior <- c(0.05, 0.5)
     sigs.prior <- c(0, 0.25)
-    n.samps.per.mod <- 1000
+    n.samps.per.mod <- 50
     
     d.true <- 1
     d.range <- c(0.1, 10)
@@ -823,7 +828,7 @@ deoptimization of synonymous codon usage in the capsid region, J. Virology 80(7)
     mods.to.sim <- c("stick", "mult", "add")
     coes.prior <- c(-0.05, -1)
     sigs.prior <- c(0, 0.25)
-    n.samps.per.mod <- 1000
+    n.samps.per.mod <- 50
     
     d.true <- 1
     d.range <- c(1, 10)
