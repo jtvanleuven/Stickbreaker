@@ -19,14 +19,14 @@ estimate.d.RDB(geno.matrix, fit.matrix, no.est = -100)
 List: \cr
    [[1]] \code{d.hat} Is the best RDB estimate. It is the
   median of the positive individual RDB values. \cr
-  [[2]] \code{d.hat.RDB.all} RDB estimate based on all individual estimates (not only postive values). \cr
-  [[3]] \code{d.hat.RDB.ind} Vector of indivdiual RDB values (see detals).\cr
-  [[4]] \code{d.hat.RDB.other} has alterantive ways to combine the individual
-  RDB esitmates (i.e. median, mean, all values, postive values only).\cr
+  [[2]] \code{d.hat.RDB.all} RDB estimate based on all individual estimates (not only postie values). \cr
+  [[3]] \code{d.hat.RDB.ind} Vector of individual RDB values (see desalt).\cr
+  [[4]] \code{d.hat.RDB.other} has alternative ways to combine the individual
+  RDB estimates (i.e. median, mean, all values, postie values only).\cr
   \code{d.hat.median.pos} is preferred estimator (\code{d.hat} above) from
-  the median of positive indivdiual values. \cr \code{d.hat.median} is median
+  the median of positive individual values. \cr \code{d.hat.median} is median
   of all values. \cr \code{d.hat.mean} is mean of all values.\cr
-  \code{d.hat.mean.pos} is mean of postiive values.
+  \code{d.hat.mean.pos} is mean of positive values.
 }
 \description{
 Estimate d using relative distance to boundary (RDB) methods

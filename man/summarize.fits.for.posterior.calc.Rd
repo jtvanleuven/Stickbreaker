@@ -14,12 +14,12 @@ summarize.fits.for.posterior.calc(fit.stick, fit.mult, fit.add)
 \item{fit.add}{List returned from fitting data to additive model in \code{fit.add.model}}
 }
 \value{
-Vector of sumamry statistics under each model
+Vector of summary statistics under each model
 }
 \description{
 Extracts summary statistics from each model needed for posterior calculation
 }
 \details{
-Extracts R2, sigma, log-likelihood and P-statistic under stickbreaking, multipliative and additive models
+Extracts R2, sigma, log-likelihood and P-statistic under stickbreaking, multiplicative and additive models
 }
 

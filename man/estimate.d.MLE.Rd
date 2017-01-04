@@ -21,7 +21,7 @@ estimate.d.MLE(geno.matrix, fit.matrix, d.range, accuracy = 0.001,
 \item{wts}{Vector of weights to weight genotypes by. Used when
 \code{\link{generate.geno.weight.matrix}} is called (see that function).
 Default is \code{c(2,1)}, meaning weight single-mutation genotypes twice as heavily as others.
-Alternatively, vector of weigths corresponding to geno.matrix can be provided.}
+Alternatively, vector of weights corresponding to geno.matrix can be provided.}
 }
 \value{
 MLE of d

@@ -10,14 +10,14 @@ analyze.stick.data.batch(mut.vals, coe.vals, sig.vals, inpath, fit.methods,
 \arguments{
 \item{mut.vals}{Vector of number of mutations to simulate}
 
-\item{coe.vals}{Vector of stickbreaking coefficients to analzye}
+\item{coe.vals}{Vector of stickbreaking coefficients to analyze}
 
 \item{sig.vals}{Vector of sigma values to analyze}
 
 \item{inpath}{The path to read input files from. Generally same as \code{outpath} from
 \code{\link{sim.fit.stick.data.batch}}.}
 
-\item{fit.methods}{Vector of all methods of esimating d to then fit model and output results.
+\item{fit.methods}{Vector of all methods of estimating d to then fit model and output results.
 Accepts "MLE", "RDB", "max", "seq", "RDB.all" and "All". "All" does all methods. Default is "seq". Case sensitive.
 Note you should use same fit.methods (or a subset of) as used when generating data in}
 
@@ -30,9 +30,9 @@ Note you should use same fit.methods (or a subset of) as used when generating da
 }
 \value{
 List: \cr
-[[1]] \code{error.table} A data frame with the parameteric conditions and the failure rate, bias and rMSE
-for the parmeters d, the stickbreaking coefficients, and sigma. \cr
-[[2]] \code{seq.method.props} A data frame withthe propotion of sequential estimates coming from the MLE
+[[1]] \code{error.table} A data frame with the parametric conditions and the failure rate, bias and rMSE
+for the parameters d, the stickbreaking coefficients, and sigma. \cr
+[[2]] \code{seq.method.props} A data frame with the proportion of sequential estimates coming from the MLE
 RDB and max methods for each parametric condition. If "seq" is not among the fit.methods, the dataframe is
 returned but empty.
 }
@@ -44,7 +44,7 @@ This function assesses bias and relative root mean squared error (rMSE) from the
 \code{\link{sim.fit.stick.data.batch}}. It also determines the failure rate for each method.
 An estimate is considered invalid (a failure) when it does not fall in the range \code{d.range}. The
 function also returns the data frame \code{seq.method.props} that indicates for the sequential method,
-what proportion of the esitmates come from the MLE, RDB and max methods. If "seq" is not part of
+what proportion of the estimates come from the MLE, RDB and max methods. If "seq" is not part of
 fit.methods (and if fit.methods <- "All" then it is), this dataframe is empty but still returned.
 }
 

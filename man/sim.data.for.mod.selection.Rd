@@ -31,7 +31,7 @@ sim.data.for.mod.selection(n.muts, coes.to.sim, sigs.to.sim, mods.to.sim,
 
 \item{coe.sim.model}{Coefficient simulation model. Possible values: "identical" means all coefficients take same value-- from coe.v.
 "uniform" indicates to  sample individual coefficients from a uniform with mean given by coe.v and distributed U(coe.v-coe.dist.par, coe.v+coe.dist.parm).
-"normal" means sample coefficients from normal distribuiton with mean from coe.v and sigma given by coe.dist.par.
+"normal" means sample coefficients from normal distribution with mean from coe.v and sigma given by coe.dist.par.
 Default = "identical".}
 
 \item{coe.dist.par}{Coefficient distribution parameter. If coe.sim.model=="uniform", then uniform is U(-coe.dist.par, +coe.dist.parm).

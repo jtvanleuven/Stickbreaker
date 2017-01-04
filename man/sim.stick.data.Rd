@@ -24,7 +24,7 @@ sim.stick.data(n.muts, coes, sigma, d.true, w.wt, geno.matrix, sim.geno.matrix)
 \value{
 List:\cr
 [[1]] \code{fit.matrix} is matrix with (simulated) observed data \cr
-[[2]] \code{fit.matrix.exp} is same matrix wihtout error
+[[2]] \code{fit.matrix.exp} is same matrix without error
 }
 \description{
 Simulate data under stickbreaking model.
@@ -33,6 +33,5 @@ Simulate data under stickbreaking model.
 Function takes coefficients (\code{coes}) and generates the expected
 fitness values for each genotype. This set of expected values is given in \code{fit.matrix.exp}.
 Then it adds normal error to them to produce the "observed" data (\code{fit.matrix}).
-sim.stick.data(5)
 }
 

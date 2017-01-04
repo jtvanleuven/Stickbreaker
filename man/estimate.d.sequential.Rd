@@ -30,7 +30,7 @@ Estimate of d. Name indicates methods used.
 Estimate d using sequential method
 }
 \details{
-If a valid MLE exists, function returns it. When MLE is at the boudnary
+If a valid MLE exists, function returns it. When MLE is at the boundary
 as defined by \code{d.range} or less than the observed distance from wild type fitness to the maximum fitness,
 this is not considered a valid estimate. If MLE is not valid, but RDB
 estimate exists, it returns RDB estimate. If neither exists, returns the Max estimated.

@@ -21,6 +21,5 @@ Minimum value of \code{n} is 2.
 }
 \seealso{
 \code{\link{sim.stick.data}}
-generate.geno.matrix(5)
 }
 

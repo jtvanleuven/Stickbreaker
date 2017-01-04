@@ -20,7 +20,7 @@ Dataframe with false rejection rate, correct and unique classification rate, and
 Calculate classification performance on simulated data
 }
 \details{
-If a model has posterior probabiltiy < \code{rej.cut}, it is rejected. If a model has posterior
-probabability \eqn{\ge}  1-\code{rej.cut}, it is considered uniquely accepted.
+If a model has posterior probability < \code{rej.cut}, it is rejected. If a model has posterior
+probability \eqn{\ge}  1-\code{rej.cut}, it is considered uniquely accepted.
 }
 

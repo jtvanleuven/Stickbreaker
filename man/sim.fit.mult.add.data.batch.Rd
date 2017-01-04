@@ -2,7 +2,7 @@
 % Please edit documentation in R/simulate_data_fnxs.R
 \name{sim.fit.mult.add.data.batch}
 \alias{sim.fit.mult.add.data.batch}
-\title{Simulate and fitness batch data under multiplicative and additive models}
+\title{Simulate fitness data under multiplicative and additive models}
 \usage{
 sim.fit.mult.add.data.batch(epi.model, mut.vals, coe.vals, sig.vals, w.wt = 1,
   n.reps.ea = 100, print.status = FALSE, outpath, wts)
@@ -18,20 +18,20 @@ sim.fit.mult.add.data.batch(epi.model, mut.vals, coe.vals, sig.vals, w.wt = 1,
 
 \item{w.wt}{Fitness of the wildtype. Default 1.}
 
-\item{n.reps.ea}{Number of replictes per parametric condition}
+\item{n.reps.ea}{Number of replicates per parametric condition}
 
 \item{print.status}{TRUE/FALSE. Should loop counters be printed.}
 
 \item{outpath}{The path to write output files to (see details about file names).}
 
-\item{wts}{Weigth to give mutation on wildtype background vs other backgrounds. Default is c(2,1).}
+\item{wts}{Weight to give mutation on wildtype background vs other backgrounds. Default is c(2,1).}
 }
 \value{
 Nothing. Instead results are written to output files and deposited in inst/extdata.
 The files are named by appending the method
 }
 \description{
-Simulate and fitness batch data under multiplicative and additive models
+Simulate fitness data under multiplicative and additive models
 }
 \details{
 Function contains a loop for combining each value of mut.vals, coe.vals and sig.vals,
@@ -40,8 +40,8 @@ generating data under the specified model and then fitting it. \cr
 Results are written to files; the name of the output files are formed by concatenating the outpath argument to
 the epi.model argument. Separate files are generated for each
 number of mutations (because the dimensionality of the output file changes with the number of mutations).
-The output files are tab-delimted text files with one row per replicate.
-The first 5 columns provide the parmaeter values and the rest of the columns give parameter estimates and
+The output files are tab-delimited text files with one row per replicate.
+The first 5 columns provide the parameter values and the rest of the columns give parameter estimates and
 measures of fit.
 }
 

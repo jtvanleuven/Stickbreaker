@@ -22,25 +22,24 @@ sim.fit.stick.data.batch(mut.vals, coe.vals, sig.vals, d.true,
 
 \item{w.wt}{Fitness of the wildtype}
 
-\item{n.reps.ea}{Number of replictes per parametric condition}
+\item{n.reps.ea}{Number of replicates per parametric condition}
 
 \item{print.status}{\code{TRUE/FALSE}. Should loop counters be printed.}
 
-\item{fit.methods}{Vector of all methods of esimating d to then fit model and output results.
+\item{fit.methods}{Vector of all methods of estimating d to then fit model and output results.
 Accepts "MLE", "RDB", "max", "seq", "RDB.all" and "All". "All" does all methods. Default is "seq". Case sensitive.}
 
 \item{outpath}{The path to write output files to (see details about file names).}
 
-\item{wts}{The weight assigned to wildtype vs other genotypes when estimating parmaeters (see details). Default c(2,1).}
+\item{wts}{The weight assigned to wildtype vs other genotypes when estimating parameters (see details). Default c(2,1).}
 
 \item{d.max.adj}{When forced to use the maximum estimator, the estimate is adjusted upwards
 by this factor (see details). Default = 1.1 (inflate observation 10\%).}
 
 \item{run.regression}{\code{TRUE/FALSE} Run regression analysis when fitting model. See details.}
 
-\item{RDB.method}{Inidcates which RDB method to use when doing sequential estimation. Options are "pos" and "all".
-"pos" option is better when mutations are strictly beneficial: "all" is appropriate when some or all mutaiton are
-deleterious.}
+\item{RDB.method}{Indicates which RDB method to use when doing sequential estimation. Options are "pos" and "all".
+"pos" option is better when mutations are strictly beneficial: "all" is appropriate when some or all mutations are deleterious.}
 }
 \value{
 Nothing. Instead results are written to output files and deposited in inst/extdata.
@@ -54,20 +53,20 @@ Function contains a loop for combining each value of mut.vals, coe.vals and sig.
 generating data under the stickbreaking model and then fitting it. The fit.methods argument allows
 user to evaluate performance of multiple methods at one time. Note that estimate of d under MLE is
 restricted to \code{d.range}. Using a reasonable upper bound here is valuable so that the stickbreaking model
-remains distint from the additive model (i.e. as d gets large and the stickbreaking coefficients get small,
-the stickbreaking model converges to the additive model). \cr
+remains distant from the additive model (i.e. as d gets large and the stickbreaking coefficients get small,
+the stickbreaking model converges to the additive model). \cr\cr
 Results are written to files; the name of the output files are formed by concatenating the outpath
-argument to the item in the fit.methods. Separate files are genreated for each method (e.g. MLE, RDB, seq).
+argument to the item in the fit.methods. Separate files are generated for each method (e.g. MLE, RDB, seq).
 Separate files are also generated for each
 number of mutations (because the dimensionality of the output file changes with the number of mutations).
-The output files are tab-delimted text files with one row per replicate.
-The first 5 columns provide the parmaeter values and the rest of the columns give parameter estimates and
-measures of fit. \cr
-\code{wts}:  The coefficient estimates are obtained by weighted comparisions. The
-default is to give wild type to single mutation genotype comparisions twice the weight
-as all other comparisions based on the assumption that wild type is know
-with much lower error than the other genotypes (actually it is assumed to be known with no error). \cr
- \code{run.regression} If you are doing simualtions to assess parameter estimation only, you don't need to run
+The output files are tab-delimited text files with one row per replicate.
+The first 5 columns provide the parameter values and the rest of the columns give parameter estimates and
+measures of fit. \cr\cr
+\code{wts}:  The coefficient estimates are obtained by weighted comparisons. The
+default is to give wild type to single mutation genotype comparisons twice the weight
+as all other comparisons based on the assumption that wild type is know
+with much lower error than the other genotypes (actually it is assumed to be known with no error). \cr\cr
+ \code{run.regression} If you are doing simulations to assess parameter estimation only, you don't need to run
  regression. If you are using this function to generate data for model fitting, then this should be set to \code{TRUE}.
 }
 

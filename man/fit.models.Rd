@@ -32,7 +32,7 @@ List:\cr
 Fit all models using \code{fit.models}. Used as a wrapper to combine outputs from \code{\link{estimate.d.MLE}}, \code{\link{estimate.d.RDB}}, \code{\link{estimate.d.sequential}}, \code{\link{fit.stick.model.given.d}}, \code{\link{fit.mult.model}}, \code{\link{fit.add.model}}, and \code{\link{summarize.fits.for.posterior.calc}}.
 }
 \details{
-x
+Function is a wrapper that fits the data to all three models. First, it estimates $d$ and, using this estimate, fits the stickbreaking model. Then it fits the multiplicative and additive models.
 }
 \seealso{
 \code{\link{estimate.d.MLE}}, \code{\link{estimate.d.RDB}}, \code{\link{estimate.d.sequential}}, \code{\link{fit.stick.model.given.d}}, \code{\link{fit.mult.model}}, \code{\link{fit.add.model}}, \code{\link{summarize.fits.for.posterior.calc}}, \code{\link{estimate.d.MLE}}, \code{\link{estimate.d.RDB}}, \code{\link{estimate.d.sequential}}

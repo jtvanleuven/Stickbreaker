@@ -20,7 +20,7 @@ sim.add.data(n.muts, addcoes, sigma, w.wt, geno.matrix)
 \value{
 List:\cr
 [[1]] \code{fit.matrix} is matrix with (simulated) observed data \cr
-[[2]] \code{fit.matrix.exp} is same matrix wihtout error
+[[2]] \code{fit.matrix.exp} is same matrix without error
 }
 \description{
 Simulate data under additive model.

@@ -2,7 +2,7 @@
 % Please edit documentation in R/model_fitting_functions.R
 \name{regress.back.fitness.vs.effect}
 \alias{regress.back.fitness.vs.effect}
-\title{Linear regressiof of background fitness against effects}
+\title{Linear regression of background fitness against effects}
 \usage{
 regress.back.fitness.vs.effect(fitness.of.backs, effects.matrix, n.muts)
 }
@@ -24,10 +24,10 @@ List: \cr
 If there is insufficient data to do regression, a warning is returned.
 }
 \description{
-Linear regressiof of background fitness against effects
+Linear regression of background fitness against effects
 }
 \details{
-For each mutation, function does simple linear regressionusing \code{lm()}.
+For each mutation, function does simple linear regression using \code{lm()}.
 The product of logged p-values (\code{P}) is the summary statistic used in model selection.
 When the model that generated the data and the model analyzing the data match, the expected slope
 of the regression line is zero.

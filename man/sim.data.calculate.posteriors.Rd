@@ -2,34 +2,34 @@
 % Please edit documentation in R/model_selection_functions.R
 \name{sim.data.calculate.posteriors}
 \alias{sim.data.calculate.posteriors}
-\title{Simulate data from priors then use to calcualte posterior probability of models given data}
+\title{Simulate data from priors then use to calculate posterior probability of models given data}
 \usage{
 sim.data.calculate.posteriors(fit.smry, data, analysis.name, coes.prior,
   sig.prior, d.range, d.adj.max, wts, n.samps.per.mod, min.R2,
   print.interval = NA)
 }
 \arguments{
-\item{fit.smry}{X}
+\item{fit.smry}{\code{fit.smry} contains the R^2 and P values for all models and is generated in \code{\link{fit.models}}}
 
-\item{data}{X}
+\item{data}{Dataset to fit}
 
-\item{analysis.name}{X}
+\item{analysis.name}{Make up some unique name. Simulate data is saved into inst directory}
 
-\item{coes.prior}{X}
+\item{coes.prior}{A vector with the lower and upper bounds on the coefficients}
 
-\item{sig.prior}{X}
+\item{sig.prior}{A vector with the lower and upper bound on sigma}
 
-\item{d.range}{X}
+\item{d.range}{Interval of d to search for maximum over}
 
-\item{d.adj.max}{X}
+\item{d.adj.max}{Factor to increase observed distant to max fitness by for ad hoc d estimate (when other estimators fail)}
 
-\item{wts}{X}
+\item{wts}{Weights when estimating coefficients and d.}
 
-\item{n.samps.per.mod}{X}
+\item{n.samps.per.mod}{The number of datasets to simulate per model}
 
-\item{min.R2}{X}
+\item{min.R2}{Minimum R^2 value. Suggest -1.}
 
-\item{print.interval}{Default = NA.}
+\item{print.interval}{Outputs progress of simulation.}
 }
 \value{
 List:\cr
@@ -37,6 +37,6 @@ List:\cr
 \code{$multinomial.model} Multinomial model fit to the simulated data used to assign posterior probabilities.
 }
 \description{
-Simulate data from priors then use to calcualte posterior probability of models given data
+Simulate data from priors then use to calculate posterior probability of models given data
 }
 

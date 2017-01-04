@@ -25,7 +25,7 @@ List:\cr
   explained by model. Does not include wild type in calculation.\cr
  [[3]] \code{sig.hat} is estimate of sigma \cr
  [[4]] \code{logLike} is log-likelihood of the data under the fitted model. \cr
- [[5]] \code{regression.results} List of results when regressing effects of mutations against the backgroun fitness
+ [[5]] \code{regression.results} List of results when regressing effects of mutations against the background fitness
 of mutations (see details). [[1]] \code{p.vals} gives p-value of each mutation, [[2]] \code{lm.intercepts} gives
 estimated intercept for mutation, [[3]] \code{lm.slopes} gives slope for each mutation, [[4]] \code{P} is the
 sum of the log of p-values. This is the summary statistic. [[5]] \code{fitness.of.backs} Matrix with fitness of backgrounds when each mutation (columns) is added to each genotype (rows).
@@ -35,9 +35,9 @@ sum of the log of p-values. This is the summary statistic. [[5]] \code{fitness.o
 Fit the multiplicative model to data
 }
 \details{
-\code{wts}:  The coefficient estimates are obtained by weighted comparisions. The
-  default is to give wild type to single mutation genotype comparisions twice the weight
-  as all other comparisions based on the assumption that wild type is know
+\code{wts}:  The coefficient estimates are obtained by weighted comparisons. The
+  default is to give wild type to single mutation genotype comparisons twice the weight
+  as all other comparisons based on the assumption that wild type is know
   with much lower error than the other genotypes (actually it is assumed to be known with no error).
   @seealso \code{\link{fit.stick.model.given.d}}
 }

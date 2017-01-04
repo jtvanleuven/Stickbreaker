@@ -22,7 +22,7 @@ sim.partial.data.from.priors.for.mod.selection(geno.matrix, coes.prior,
 
 \item{d.range}{Range of possible values for d. If estimate is outside this, estimate is not considered valid.}
 
-\item{d.adj.max}{Factor to increase observed distanct to max fitness by for ad hoc d estimate (when other estimators fail)}
+\item{d.adj.max}{Factor to increase observed distant to max fitness by for ad hoc d estimate (when other estimators fail)}
 
 \item{w.wt}{Wild type fitness.}
 
@@ -53,7 +53,7 @@ to the output file (defined by \code{outpath}).
 The coe.sim.model determines how the individual coefficients are generated.
  Possible values: "identical" means all coefficients take same value--E[coe].
 "uniform" indicates to  sample individual coefficients from a uniform distribution: U(E[coe]-coe.dist.par, E[coe]+coe.dist.parm).
-"normal" means sample coefficients from normal distribuiton with mean E[coe] and sigma given by coe.dist.par.
+"normal" means sample coefficients from normal distribution with mean E[coe] and sigma given by coe.dist.par.
 Default = "identical".
 }
 

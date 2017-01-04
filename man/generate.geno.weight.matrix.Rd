@@ -21,11 +21,11 @@ Internal simulation function to generate a matrix to weight the genotypes when e
 }
 \details{
 To calculate the likelihood of the data under the stickbreaking model for a given value of d,
-we need to esimate the stickbreaking coefficients. The issue is whether all genotypes in the network provide equally good information
+we need to estimate the stickbreaking coefficients. The issue is whether all genotypes in the network provide equally good information
 about the coefficients. The default assumption is that the wild type fitness
-is know without error while all other genotypes have the same error strucutre. Coefficient estimates are based
+is know without error while all other genotypes have the same error structure. Coefficient estimates are based
 on comparing pairs of genotypes: with and without the mutation. Therefore, estimates based on comparing wild type to
-the single mutations (singletons) are expected to have half the variance of all other comparisions (i.e. multiples). This
+the single mutations (singletons) are expected to have half the variance of all other comparisons (i.e. multiples). This
 function generates the weights matrix that reflects this. To change this assumption, change the \code{wts} parameter. For example,
 if the wild type has the same error as all other genotypes, \code{wts = c(1,1)} would be appropriate.
 }
