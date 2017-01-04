@@ -3,8 +3,5 @@
 .Rapp.history
 .RData
 .Ruserdata
-inst/figures/
-inst/extdata/
-inst/models/
 *.utf8.md
 .Rproj.user
