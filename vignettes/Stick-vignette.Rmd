@@ -30,7 +30,7 @@ suppressPackageStartupMessages({
   library(nnet)
   library(lattice)
   library(xtable)
-  devtools::load_all()
+  library(Stickbreaker)
 })
 ```
 
@@ -42,10 +42,11 @@ The data should be in a text file. If there are $n$ mutations in the dataset, th
 
 ## B. Read in data {-}
 
+Your data may be read as a csv file, or you can use the example data as done in vignette.
 
 ```{r, echo=TRUE}
-  inpath <- system.file("data", package="Stickbreaker")
-  data <- read.csv(paste(inpath,"Chou.data.csv",sep="/"))
+  data <- Chou.data
+  #data <- read.csv("your_data.csv")
 ```
 
 ## C. Fit models {-}
@@ -101,8 +102,8 @@ Whereas above we used wrapper functions to do the entire analysis is just a few 
 Read in data. See above (II. Basic Analysis) for format of data.
 
 ```{r}
-  inpath <- system.file("data", package="Stickbreaker")
-  data <- read.csv(paste(inpath,"Khan.data.csv",sep="/"))
+  data <- Khan.data
+  #data <- read.csv("your_data.csv")
 ```
 
 Define parameters to use in estimation (`wts`, `d.range` and `d.adj.max`). Again, these are discussed above. Then extract number of genotypes (`n.genos`), number of mutations (`n.muts`), the genotype matrix (`geno.matrix`; the 0/1 columns in the data) and the fitness matrix (`fit.matrix`; the last column in the data). 
