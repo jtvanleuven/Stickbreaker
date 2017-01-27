@@ -11,7 +11,7 @@ sim.data.from.priors.for.mod.selection(n.muts, coes.prior, sigs.prior,
 \arguments{
 \item{n.muts}{Number of mutations to simulate. Vector of the form \code{c(3,4,5)}.}
 
-\item{coes.prior}{Range for uniform prior on coefficients}
+\item{coes.prior}{A vector with the lower and upper bounds on the coefficients}
 
 \item{sigs.prior}{Range for uniform prior on sigma}
 

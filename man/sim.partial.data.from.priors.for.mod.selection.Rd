@@ -12,7 +12,7 @@ sim.partial.data.from.priors.for.mod.selection(geno.matrix, coes.prior,
 \arguments{
 \item{geno.matrix}{Matrix specifying which genotypes to simulate}
 
-\item{coes.prior}{Range for uniform prior on coefficients}
+\item{coes.prior}{A vector with the lower and upper bounds on the coefficients}
 
 \item{sigs.prior}{Range for uniform prior on sigma}
 

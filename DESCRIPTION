@@ -17,7 +17,7 @@ LazyData: TRUE
 RoxygenNote: 5.0.1.9000
 Imports: nnet, lattice, xtable
 Suggests: knitr, rmarkdown
-VignetteBuilder: knitr
+VignetteBuilder: rmarkdown
 Packaged: 2017-01-04 19:17:09 UTC; JT
 Author: Craig Miller [aut],
   James Van Leuven [cre]
