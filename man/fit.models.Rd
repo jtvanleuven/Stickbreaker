@@ -34,6 +34,9 @@ Fit all models using \code{fit.models}. Used as a wrapper to combine outputs fro
 \details{
 Function is a wrapper that fits the data to all three models. First, it estimates $d$ and, using this estimate, fits the stickbreaking model. Then it fits the multiplicative and additive models.
 }
+\examples{
+fit.models(Chou.data, d.range=c(0.1, 10), d.adj.max=1.1, wts=c(2,1))
+}
 \seealso{
 \code{\link{estimate.d.MLE}}, \code{\link{estimate.d.RDB}}, \code{\link{estimate.d.sequential}}, \code{\link{fit.stick.model.given.d}}, \code{\link{fit.mult.model}}, \code{\link{fit.add.model}}, \code{\link{summarize.fits.for.posterior.calc}}, \code{\link{estimate.d.MLE}}, \code{\link{estimate.d.RDB}}, \code{\link{estimate.d.sequential}}
 }

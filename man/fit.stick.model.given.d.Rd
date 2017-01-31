@@ -53,5 +53,13 @@ Note that the coefficient estimates are obtained by weighting. The
   are uniform(0,1). The results from those regressions are returned in \code{regression.results}. \cr
  \code{run.regression} If you are doing simulations to assess parameter estimation only, you don't need to run
  regression. If you are using this function to generate data for model fitting, then this should be set to \code{TRUE}.
+ @examples
+ n.muts <- length(Khan.data[1,])-1
+ geno.matrix <- Khan.data[,seq(1, n.muts)]
+ fit.matrix <- as.matrix(Khan.data[,(n.muts+1)])
+ d.hat.MLE <- estimate.d.MLE(geno.matrix, fit.matrix,c(0.1, 10),0.001,c(2,1))
+ d.hat.RDB <- estimate.d.RDB(geno.matrix, fit.matrix,-100)$d.hat.RDB
+ d.hat.seq <- estimate.d.sequential(geno.matrix, fit.matrix, d.hat.MLE, d.hat.RDB, c(0.1, 10), 1.1)
+ fit.stick.model.given.d(geno.matrix, fit.matrix, d.hat.seq, run.regression=TRUE)
 }
 

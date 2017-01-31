@@ -55,4 +55,27 @@ The coe.sim.model determines how the individual coefficients are generated.
 "normal" means sample coefficients from normal distribution with mean E[coe] and sigma given by coe.dist.par.
 Default = "identical".
 }
+\examples{
+ n.muts <- 4
+ n.muts <- length(Khan.data[1,])-1
+ geno.matrix <- Khan.data[,seq(1, n.muts)]
+ fit.matrix <- as.matrix(Khan.data[,(n.muts+1)])
+ outdir <- system.file("extdata", package="Stickbreaker")
+ file.name <- paste("Training_simulated_priors_fit_data_", n.muts, "muts.txt", sep="")
+ outpath <- paste(outdir, file.name, sep="/")
+ sim.data.from.priors.for.mod.selection(n.muts,
+   c(0.05, 0.5),
+   c(0, 0.25),
+   c(4),
+   1,
+   c(0.1, 10),
+   1.1,
+   1,
+   c(2,1),
+   outpath,
+   50,
+   coe.sim.model="identical",
+   coe.dist.par=NA,
+   print.interval=NA)
+}
 

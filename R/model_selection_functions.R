@@ -14,7 +14,20 @@
 #' @return List:\cr
 #' \code{$posteriors} Posterior probability of each epistasis model. \cr
 #' \code{$multinomial.model} Multinomial model fit to the simulated data used to assign posterior probabilities.
+#' @examples
+#' fit.results <- fit.models(Chou.data, c(0.1, 10), 1.1, c(2,1))
+#' sim.data.calculate.posteriors(fit.results$fit.smry,
+#'                            Chou.data,
+#'                            "Test",
+#'                            c(0.05, 0.5),
+#'                            c(0, 0.25),
+#'                            c(0.1, 10),
+#'                            1.1,
+#'                            c(2,1),
+#'                            50,
+#'                            -1,25)
 #' @export
+
 
 sim.data.calculate.posteriors <- function(fit.smry, data, analysis.name, coes.prior, sig.prior, d.range, d.adj.max, wts, n.samps.per.mod, min.R2, print.interval=NA){
 
@@ -76,6 +89,7 @@ sim.data.calculate.posteriors <- function(fit.smry, data, analysis.name, coes.pr
 #' @details Function loops over all parametric combinations and simulates datasets. For each dataset it
 #' fits to each of the models and outputs a row of metrics that summarize the fits.
 #' @export sim.data.for.mod.selection
+
 
 sim.data.for.mod.selection <- function(n.muts, coes.to.sim, sigs.to.sim, mods.to.sim, d.true, d.range, w.wt, wts, outpath, n.reps.ea, coe.sim.model="identical", coe.dist.par=NA){
   geno.matrix <- generate.geno.matrix(n.muts)
@@ -173,6 +187,28 @@ sim.data.for.mod.selection <- function(n.muts, coes.to.sim, sigs.to.sim, mods.to
 #' "uniform" indicates to  sample individual coefficients from a uniform distribution: U(E[coe]-coe.dist.par, E[coe]+coe.dist.parm).
 #' "normal" means sample coefficients from normal distribution with mean E[coe] and sigma given by coe.dist.par.
 #' Default = "identical".
+#' @examples
+#'  n.muts <- 4
+#'  n.muts <- length(Khan.data[1,])-1
+#'  geno.matrix <- Khan.data[,seq(1, n.muts)]
+#'  fit.matrix <- as.matrix(Khan.data[,(n.muts+1)])
+#'  outdir <- system.file("extdata", package="Stickbreaker")
+#'  file.name <- paste("Training_simulated_priors_fit_data_", n.muts, "muts.txt", sep="")
+#'  outpath <- paste(outdir, file.name, sep="/")
+#'  sim.data.from.priors.for.mod.selection(n.muts,
+#'    c(0.05, 0.5),
+#'    c(0, 0.25),
+#'    c(4),
+#'    1,
+#'    c(0.1, 10),
+#'    1.1,
+#'    1,
+#'    c(2,1),
+#'    outpath,
+#'    50,
+#'    coe.sim.model="identical",
+#'    coe.dist.par=NA,
+#'    print.interval=NA)
 #' @export sim.data.from.priors.for.mod.selection
 
 sim.data.from.priors.for.mod.selection <- function(n.muts, coes.prior, sigs.prior, mods.to.sim, d.true, d.range, d.adj.max, w.wt, wts, outpath, n.samps.per.mod, coe.sim.model="identical", coe.dist.par=NA, print.interval=NA){
@@ -376,6 +412,10 @@ summarize.posteriors.on.simulated.dataset <- function(data, rej.cut=0.05, n.muts
 #' "normal" means sample coefficients from normal distribution with mean E[coe] and sigma given by coe.dist.par.
 #' Default = "identical".
 #' @export sim.partial.data.from.priors.for.mod.selection
+#'
+#'
+#'
+#'
 
 sim.partial.data.from.priors.for.mod.selection <- function(geno.matrix, coes.prior, sigs.prior, mods.to.sim, d.true, d.range, d.adj.max, w.wt, wts, outpath, n.samps.per.mod, coe.sim.model="identical", coe.dist.par=NA, print.interval){
   n.muts <- length(geno.matrix[1,])

@@ -34,4 +34,9 @@ Function takes coefficients (\code{coes}) and generates the expected
 fitness values for each genotype. This set of expected values is given in \code{fit.matrix.exp}.
 Then it adds normal error to them to produce the "observed" data (\code{fit.matrix}).
 }
+\examples{
+ geno.matrix <- generate.geno.matrix(5)
+ coes <- rep(0.1, 5)
+ sim.stick.data(5, coes, 0.1, 1, 1, geno.matrix)
+}
 

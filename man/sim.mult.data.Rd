@@ -30,4 +30,9 @@ Function takes selection coefficients (\code{selcoes}) and generates the expecte
 fitness values for each genotype. This set of expected values is returned as \code{fit.matrix.exp}.
 Then it adds normal error to them to produce the "observed" data (\code{fit.matrix}).
 }
+\examples{
+ geno.matrix <- generate.geno.matrix(3)
+ selcoes <- rep(0.3, 3)
+ sim.mult.data(3, selcoes, 0.1, 1, geno.matrix)
+}
 

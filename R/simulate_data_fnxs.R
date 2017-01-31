@@ -4,6 +4,7 @@
 #' @return Matrix with all genotypes made of \code{n} mutations. Each column is a mutation (0=absent, 1=present), rows are genotypes.
 #' @details Used when simulating data for a complete network. Generally called internally during simulations to create matrix for which fitness values will then be simulated.
 #' Minimum value of \code{n} is 2.
+#' @examples generate.geno.matrix(5)
 #' @seealso \code{\link{sim.stick.data}}
 #' @export
 
@@ -43,7 +44,12 @@ generate.geno.matrix <- function(n){
 #' @details Function takes coefficients (\code{coes}) and generates the expected
 #' fitness values for each genotype. This set of expected values is given in \code{fit.matrix.exp}.
 #' Then it adds normal error to them to produce the "observed" data (\code{fit.matrix}).
+#' @examples
+#'  geno.matrix <- generate.geno.matrix(5)
+#'  coes <- rep(0.1, 5)
+#'  sim.stick.data(5, coes, 0.1, 1, 1, geno.matrix)
 #' @export
+
 
 sim.stick.data <- function(n.muts, coes, sigma, d.true, w.wt, geno.matrix,sim.geno.matrix){
   n.genos <- length(geno.matrix[,1])
@@ -96,7 +102,27 @@ sim.stick.data <- function(n.muts, coes, sigma, d.true, w.wt, geno.matrix,sim.ge
 #'  regression. If you are using this function to generate data for model fitting, then this should be set to \code{TRUE}.
 #' @return Nothing. Instead results are written to output files and deposited in inst/extdata.
 #' The files are named by appending the method
+#' @examples
+#' outfile <- "Stick_batch_out_test"
+#' outdir <- system.file("extdata", package="Stickbreaker")
+#' outpath <- paste(outdir, outfile, sep="/")
+#' sim.fit.stick.data.batch(c(3,4,5),
+#'   c(0.1, 0.3, 0.5),
+#'   c(0.02, 0.05, 0.08),
+#'   1,
+#'   c(0.1, 10),
+#'   1,
+#'   10,
+#'   print.status=FALSE,
+#'   fit.methods="seq",
+#'   outpath=outpath,
+#'   c(2,1),
+#'   1.0,
+#'   run.regression="FALSE",
+#'   RDB.method="pos")
 #' @export
+#'
+
 
 sim.fit.stick.data.batch <- function(mut.vals, coe.vals, sig.vals, d.true, d.range=c(0.1, 10), w.wt, n.reps.ea=100, print.status=FALSE, fit.methods=c("seq"), outpath, wts=c(2,1), d.max.adj=1.1, run.regression=TRUE, RDB.method){
   if (fit.methods == "All"){
@@ -180,7 +206,12 @@ sim.fit.stick.data.batch <- function(mut.vals, coe.vals, sig.vals, d.true, d.ran
 #' @details Function takes selection coefficients (\code{selcoes}) and generates the expected
 #' fitness values for each genotype. This set of expected values is returned as \code{fit.matrix.exp}.
 #' Then it adds normal error to them to produce the "observed" data (\code{fit.matrix}).
+#' @examples
+#'  geno.matrix <- generate.geno.matrix(3)
+#'  selcoes <- rep(0.3, 3)
+#'  sim.mult.data(3, selcoes, 0.1, 1, geno.matrix)
 #' @export
+
 
 sim.mult.data <- function(n.muts, selcoes, sigma, w.wt, geno.matrix){
   n.genos <- length(geno.matrix[,1])
@@ -206,6 +237,10 @@ sim.mult.data <- function(n.muts, selcoes, sigma, w.wt, geno.matrix){
 #' @details Function takes additive effects (\code{addcoes}) and generates the expected
 #' fitness values for each genotype. This set of expected values is returned as \code{fit.matrix.exp}.
 #' Then it adds normal error to them to produce the "observed" data (\code{fit.matrix}).
+#' @examples
+#' addcoes <- rep(0.3, 3)
+#' geno.matrix <- generate.geno.matrix(3)
+#' sim.add.data(3,addcoes,0.1,1,geno.matrix)
 #' @export
 
 sim.add.data <- function(n.muts, addcoes, sigma, w.wt, geno.matrix){

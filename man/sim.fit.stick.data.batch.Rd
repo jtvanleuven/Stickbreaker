@@ -69,4 +69,23 @@ with much lower error than the other genotypes (actually it is assumed to be kno
  \code{run.regression} If you are doing simulations to assess parameter estimation only, you don't need to run
  regression. If you are using this function to generate data for model fitting, then this should be set to \code{TRUE}.
 }
+\examples{
+outfile <- "Stick_batch_out_test"
+outdir <- system.file("extdata", package="Stickbreaker")
+outpath <- paste(outdir, outfile, sep="/")
+sim.fit.stick.data.batch(c(3,4,5),
+  c(0.1, 0.3, 0.5),
+  c(0.02, 0.05, 0.08),
+  1,
+  c(0.1, 10),
+  1,
+  10,
+  print.status=FALSE,
+  fit.methods="seq",
+  outpath=outpath,
+  c(2,1),
+  1.0,
+  run.regression="FALSE",
+  RDB.method="pos")
+}
 

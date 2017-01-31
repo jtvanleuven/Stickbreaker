@@ -19,9 +19,11 @@
 #'  [[2]] \code{fit.mult} contains multiplicative model details like the intercept, slope, and predicted fitness values for the given allele combinations.\cr
 #'  [[2]] \code{fit.stick} contains additive model details like the intercept, slope, and predicted fitness values for the given allele combinations.\cr
 #' @details Function is a wrapper that fits the data to all three models. First, it estimates $d$ and, using this estimate, fits the stickbreaking model. Then it fits the multiplicative and additive models.
-#' @export
+#' @examples
+#' fit.models(Chou.data, d.range=c(0.1, 10), d.adj.max=1.1, wts=c(2,1))
 #' @seealso
 #'  \code{\link{estimate.d.MLE}}, \code{\link{estimate.d.RDB}}, \code{\link{estimate.d.sequential}}, \code{\link{fit.stick.model.given.d}}, \code{\link{fit.mult.model}}, \code{\link{fit.add.model}}, \code{\link{summarize.fits.for.posterior.calc}}, \code{\link{estimate.d.MLE}}, \code{\link{estimate.d.RDB}}, \code{\link{estimate.d.sequential}}
+#' @export
 #'
 
 
@@ -76,6 +78,14 @@ fit.models <- function(data, d.range, d.adj.max=1.1, wts=c(2,1)){
 #'   are uniform(0,1). The results from those regressions are returned in \code{regression.results}. \cr
 #'  \code{run.regression} If you are doing simulations to assess parameter estimation only, you don't need to run
 #'  regression. If you are using this function to generate data for model fitting, then this should be set to \code{TRUE}.
+#'  @examples
+#'  n.muts <- length(Khan.data[1,])-1
+#'  geno.matrix <- Khan.data[,seq(1, n.muts)]
+#'  fit.matrix <- as.matrix(Khan.data[,(n.muts+1)])
+#'  d.hat.MLE <- estimate.d.MLE(geno.matrix, fit.matrix,c(0.1, 10),0.001,c(2,1))
+#'  d.hat.RDB <- estimate.d.RDB(geno.matrix, fit.matrix,-100)$d.hat.RDB
+#'  d.hat.seq <- estimate.d.sequential(geno.matrix, fit.matrix, d.hat.MLE, d.hat.RDB, c(0.1, 10), 1.1)
+#'  fit.stick.model.given.d(geno.matrix, fit.matrix, d.hat.seq, run.regression=TRUE)
 #' @export
 
 
@@ -193,6 +203,11 @@ fit.stick.model.given.d <- function(geno.matrix, fit.matrix, d.here, wts=c(2,1),
 #'   as all other comparisons based on the assumption that wild type is know
 #'   with much lower error than the other genotypes (actually it is assumed to be known with no error).
 #'   @seealso \code{\link{fit.stick.model.given.d}}
+#'   @examples
+#'   fit.mult.model(
+#'    data[,seq(1, length(Khan.data[1,])-1)],
+#'    as.matrix(data[,(length(Khan.data[1,]))]),
+#'    c(2,1))
 #' @export
 
 
@@ -296,6 +311,11 @@ fit.mult.model <- function(geno.matrix, fit.matrix, wts=c(2,1)){
 #'   default is to give wild type to single mutation genotype comparisons twice the weight
 #'   as all other comparisons based on the assumption that wild type is know
 #'   with much lower error than the other genotypes (actually it is assumed to be known with no error).
+#'   @examples
+#'   n.muts <- length(Khan.data[1,])-1
+#'   geno.matrix <- Khan.data[,seq(1, n.muts)]
+#'   fit.matrix <- as.matrix(Khan.data[,(n.muts+1)])
+#'   fit.add.model(geno.matrix, fit.matrix, c(2,1))
 #'   @seealso \code{\link{fit.stick.model.given.d}}
 #' @export
 

@@ -40,5 +40,10 @@ Fit the multiplicative model to data
   as all other comparisons based on the assumption that wild type is know
   with much lower error than the other genotypes (actually it is assumed to be known with no error).
   @seealso \code{\link{fit.stick.model.given.d}}
+  @examples
+  fit.mult.model(
+   data[,seq(1, length(Khan.data[1,])-1)],
+   as.matrix(data[,(length(Khan.data[1,]))]),
+   c(2,1))
 }
 

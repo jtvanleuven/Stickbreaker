@@ -39,6 +39,11 @@ Fit the additive model to data
   default is to give wild type to single mutation genotype comparisons twice the weight
   as all other comparisons based on the assumption that wild type is know
   with much lower error than the other genotypes (actually it is assumed to be known with no error).
+  @examples
+  n.muts <- length(Khan.data[1,])-1
+  geno.matrix <- Khan.data[,seq(1, n.muts)]
+  fit.matrix <- as.matrix(Khan.data[,(n.muts+1)])
+  fit.add.model(geno.matrix, fit.matrix, c(2,1))
   @seealso \code{\link{fit.stick.model.given.d}}
 }
 

@@ -1,7 +1,7 @@
 Package: Stickbreaker
 Type: Package
 Title: Fits Stickbreaking, Multiplicative and Additive Models to Data
-Version: 0.1.0
+Version: 1.0.0
 Authors@R: c(
     person("Craig", "Miller", email = "crmiller@uidaho.edu", role = "aut"),
     person("James", "Van Leuven", email = "jtvanleuven@gmail.com", role = "cre"))
@@ -17,7 +17,6 @@ LazyData: TRUE
 RoxygenNote: 5.0.1.9000
 Imports: nnet, lattice, xtable
 Suggests: knitr, rmarkdown
-VignetteBuilder: rmarkdown
 Packaged: 2017-01-04 19:17:09 UTC; JT
 Author: Craig Miller [aut],
   James Van Leuven [cre]

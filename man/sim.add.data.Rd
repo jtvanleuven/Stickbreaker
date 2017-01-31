@@ -30,4 +30,9 @@ Function takes additive effects (\code{addcoes}) and generates the expected
 fitness values for each genotype. This set of expected values is returned as \code{fit.matrix.exp}.
 Then it adds normal error to them to produce the "observed" data (\code{fit.matrix}).
 }
+\examples{
+addcoes <- rep(0.3, 3)
+geno.matrix <- generate.geno.matrix(3)
+sim.add.data(3,addcoes,0.1,1,geno.matrix)
+}
 

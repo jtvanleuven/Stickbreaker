@@ -33,6 +33,12 @@ calc.stick.logLn <- function(geno.matrix, fit.matrix, d.vect, wts=c(2,1)){
 #'   Alternatively, vector of weights corresponding to geno.matrix can be provided.
 #' @return MLE of d
 #' @details Maximizes the function \code{\link{calc.stick.logLn}} using \code{\link{optimize}}
+#' @examples
+#' n.muts <- length(Khan.data[1,])-1
+#' geno.matrix <- Khan.data[,seq(1, n.muts)]
+#' fit.matrix <- as.matrix(Khan.data[,(n.muts+1)])
+#' estimate.d.MLE(geno.matrix, fit.matrix,c(0.1, 10),0.001,c(2,1))
+
 #' @export
 
 estimate.d.MLE <- function(geno.matrix, fit.matrix, d.range, accuracy=0.001, wts=c(2,1)){
@@ -64,7 +70,13 @@ estimate.d.MLE <- function(geno.matrix, fit.matrix, d.range, accuracy=0.001, wts
 #'   \code{d.hat.mean.pos} is mean of positive values.
 #' @details The method calculates RDB for each genotype and its complement. The
 #'   \code{d.hat.RDB.all} indicate the genotype pair that produces the estimate.
+#' @examples
+#' n.muts <- length(Khan.data[1,])-1
+#' geno.matrix <- Khan.data[,seq(1, n.muts)]
+#' fit.matrix <- as.matrix(Khan.data[,(n.muts+1)])
+#' estimate.d.RDB(geno.matrix, fit.matrix,-100)
 #' @export
+
 
 estimate.d.RDB <- function(geno.matrix, fit.matrix, no.est=-100){   # calculates the relative distance to boundary estimators
   n.genos <- dim(geno.matrix)[1]
@@ -131,6 +143,14 @@ estimate.d.RDB <- function(geno.matrix, fit.matrix, no.est=-100){   # calculates
 #' estimate exists, it returns RDB estimate. If neither exists, returns the Max estimated.
 #' The Max estimate is based on the largest observed fitness times a factor \code{d.max.adj}.
 #' Name of the returned object indicates the method estimate is based on (MLE, RDB or Max).
+#' @examples
+#' n.muts <- length(Khan.data[1,])-1
+#' geno.matrix <- Khan.data[,seq(1, n.muts)]
+#' fit.matrix <- as.matrix(Khan.data[,(n.muts+1)])
+#' d.hat.MLE <- estimate.d.MLE(geno.matrix, fit.matrix,c(0.1, 10),0.001,c(2,1))
+#' d.hat.RDB <- estimate.d.RDB(geno.matrix, fit.matrix,-100)$d.hat.RDB
+#' estimate.d.sequential(geno.matrix, fit.matrix, d.hat.MLE, d.hat.RDB, c(0.1, 10), 1.1)
+
 #' @export
 
 estimate.d.sequential <- function(geno.matrix, fit.matrix, d.hat.MLE, d.hat.RDB, d.range, d.max.adj=1.1){
